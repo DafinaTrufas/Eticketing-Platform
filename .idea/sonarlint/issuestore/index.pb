@@ -13,8 +13,6 @@ _
 /src/main/java/ro/pao/service/TicketService.java,8\c\8cdbefc09f487422c20d3bbcf88a0962fdab1a28
 g
 7src/main/java/ro/pao/service/SportsLocationService.java,f\b\fbf1887bc1b5d5b0c57a7645578c4911f47f12f8
-f
-6src/main/java/ro/pao/service/CulturalEventService.java,1\e\1ea27a2095409c0ec95e00cca5450f265f56dd49
 d
 4src/main/java/ro/pao/service/SportsEventService.java,2\0\203f6b24747a8a7477d605dbc78528bb8c33d7b1
 ]
@@ -43,8 +41,6 @@ V
 0src/main/java/ro/pao/model/CulturalLocation.java,9\2\925cfbe2490bcba48f98e382b73539be3dfec920
 _
 /src/main/java/ro/pao/model/MailInformation.java,3\6\369ed71fff935adaf5850e74d51843e99511ea62
-[
-+src/main/java/ro/pao/model/SportsEvent.java,1\8\186680ae6015cbb8a04d62230fd20c09fdf0ba61
 h
 8src/main/java/ro/pao/service/impl/TicketServiceImpl.java,7\5\7596a290b160da342379e6b2db1459ec9ebf3b12
 p
@@ -65,3 +61,5 @@ V
 &src/main/java/ro/pao/model/Ticket.java,f\7\f76a575b21530c4274ff7ca77223166995cf1a49
 ^
 .src/main/java/ro/pao/model/SportsLocation.java,4\2\42ea74fdc19e8799a0e2fbb087df18235b4024af
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
