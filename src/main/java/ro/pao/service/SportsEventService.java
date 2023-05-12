@@ -5,6 +5,7 @@ import ro.pao.model.SportsEvent;
 import ro.pao.model.SportsLocation;
 import ro.pao.model.enums.SportsLocationType;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,11 +13,13 @@ import java.util.UUID;
 
 public interface SportsEventService {
 
-    Optional<SportsEvent> getById(UUID id);
+    Optional<SportsEvent> getById(UUID id) throws SQLException;
 
-    Optional<SportsEvent> getByLocation(SportsLocation sportsLocation);
+    Optional<SportsEvent> getByLocation(UUID id) throws SQLException;
 
     Map<UUID, SportsEvent> getAllFromMap();
+
+    Map<UUID, SportsEvent> getAllFromMapWithCondition();
 
     void addAllFromGivenMap(Map<UUID, SportsEvent> sportsEventMap);
 
@@ -26,6 +29,6 @@ public interface SportsEventService {
 
     void updateElementById(UUID id, SportsEvent newSportsEvent);
 
-    Map<UUID, SportsEvent> filterByLocationType(SportsLocationType sportsLocationType);
+    Map<UUID, SportsEvent> listToMap(List<SportsEvent> sportsEventList);
 
 }

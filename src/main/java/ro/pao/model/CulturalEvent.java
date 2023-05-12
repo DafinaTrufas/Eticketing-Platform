@@ -1,7 +1,6 @@
 package ro.pao.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ro.pao.model.abstracts.Event;
 import ro.pao.model.abstracts.Location;
@@ -16,6 +15,8 @@ import java.util.UUID;
 @SuperBuilder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CulturalEvent extends Event {
 
     private String title;

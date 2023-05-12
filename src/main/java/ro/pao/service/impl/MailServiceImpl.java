@@ -1,57 +1,105 @@
 package ro.pao.service.impl;
 
-import ro.pao.model.CardInformation;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import ro.pao.model.MailInformation;
+import ro.pao.repository.MailInformationRepository;
+import ro.pao.service.CardService;
 import ro.pao.service.MailService;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
-    private static Map<UUID, MailInformation> mailInformationMap = new HashMap<>();
+    private final MailInformationRepository mailInformationRepository;
 
     @Override
-    public Optional<MailInformation> getById(UUID id) {
-        return mailInformationMap.values().stream()
-                .filter(element -> id.equals(element.getId()))
-                .findAny();
+    public Optional<MailInformation> getById(UUID id) throws SQLException {
+
+        Optional<MailInformation> mailInformation = mailInformationRepository.getObjectById(id);
+
+        if(mailInformation.isEmpty()) {
+            throw new RuntimeException("MailInformation not found!");
+        }
+
+        return mailInformation;
+
     }
 
     @Override
-    public Optional<MailInformation> getByName(String lastName, String firstName) {
-        return mailInformationMap.values().stream()
-                .filter(element -> lastName.equals(element.getLastName()))
-                .filter(element -> firstName.equals(element.getFirstName()))
-                .findAny();
+    public Optional<MailInformation> getByAddress(String address) throws SQLException {
+
+        Optional<MailInformation> mailInformation = mailInformationRepository.getObjectByAddress(address);
+
+        if(mailInformation.isEmpty()) {
+            throw new RuntimeException("There is no MailInformation with this address.");
+        }
+
+        return mailInformation;
+
     }
 
     @Override
     public Map<UUID, MailInformation> getAllFromMap() {
-        return mailInformationMap;
+
+        return listToMap(mailInformationRepository.getAll());
+
+    }
+
+    @Override
+    public Map<UUID, MailInformation> getAllFromMapWithCondition() {
+
+        return listToMap(mailInformationRepository.getAll().stream()
+                .filter(mailInformation -> mailInformation.getAddress().contains("gmail"))
+                .collect(Collectors.toList()));
+
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, MailInformation> mailInformationMap) {
-        MailServiceImpl.mailInformationMap.putAll(mailInformationMap);
+
+        mailInformationRepository.addAllFromGivenList(mailInformationMap.values().stream().toList());
+
     }
 
     @Override
     public void addOnlyOne(MailInformation mailInformation) {
-        mailInformationMap.put(mailInformation.getId(), mailInformation);
+
+        mailInformationRepository.addNewObject(mailInformation);
+
     }
 
     @Override
     public void removeElementById(UUID id) {
-        mailInformationMap = mailInformationMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        mailInformationRepository.deleteObjectById(id);
+
     }
 
     @Override
     public void updateElementById(UUID id, MailInformation newMailInformation) {
-        removeElementById(id);
-        addOnlyOne(newMailInformation);
+
+        mailInformationRepository.updateObjectById(id, newMailInformation);
+
+    }
+
+    @Override
+    public Map<UUID, MailInformation> listToMap(List<MailInformation> mailInformationList) {
+
+        Map<UUID, MailInformation> mailInformationMap = new HashMap<>();
+
+        for (MailInformation mailInformation : mailInformationList) {
+
+            mailInformationMap.put(mailInformation.getId(), mailInformation);
+
+        }
+
+        return mailInformationMap;
+
     }
 
 }

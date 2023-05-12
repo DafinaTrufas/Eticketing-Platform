@@ -15,7 +15,9 @@ public class Ticket {
 
     private UUID eventId;
 
-    private String price;
+    private UUID clientId;
+
+    private Double price;
 
     private TicketType ticketType;
 

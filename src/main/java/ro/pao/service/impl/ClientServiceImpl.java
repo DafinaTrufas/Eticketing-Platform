@@ -1,58 +1,107 @@
 package ro.pao.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import ro.pao.model.Client;
 import ro.pao.model.CulturalEvent;
-import ro.pao.model.CulturalLocation;
+import ro.pao.model.MailInformation;
+import ro.pao.repository.ClientRepository;
+import ro.pao.service.CardService;
 import ro.pao.service.ClientService;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
-    private static Map<UUID, Client> clientMap = new HashMap<>();
+    private final ClientRepository clientRepository;
 
     @Override
-    public Optional<Client> getById(UUID id) {
-        return clientMap.values().stream()
-                .filter(element -> id.equals(element.getId()))
-                .findAny();
+    public Optional<Client> getById(UUID id) throws SQLException {
+
+        Optional<Client> client = clientRepository.getObjectById(id);
+
+        if(client.isEmpty()) {
+            throw new RuntimeException("Client not found!");
+        }
+
+        return client;
+
     }
 
     @Override
-    public Optional<Client> getByAddress(String address) {
-        return clientMap.values().stream()
-                .filter(element -> address.equals(element.getAddress()))
-                .findAny();
+    public Optional<Client> getByBirthDate(LocalDate date) throws SQLException {
+
+        Optional<Client> client = clientRepository.getObjectByBirthDate(date);
+
+        if(client.isEmpty()) {
+            throw new RuntimeException("There is no client born on the given date.");
+        }
+
+        return client;
+
     }
 
     @Override
     public Map<UUID, Client> getAllFromMap() {
-        return clientMap;
+
+        return listToMap(clientRepository.getAll());
+
+    }
+
+    @Override
+    public Map<UUID, Client> getAllFromMapWithCondition() {
+
+        return listToMap(clientRepository.getAll().stream()
+                .filter(client -> client.getLastName().contains("escu"))
+                .collect(Collectors.toList()));
+
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, Client> clientMap) {
-        ClientServiceImpl.clientMap.putAll(clientMap);
+
+        clientRepository.addAllFromGivenList(clientMap.values().stream().toList());
+
     }
 
     @Override
     public void addOnlyOne(Client client) {
-        clientMap.put(client.getId(), client);
+
+        clientRepository.addNewObject(client);
+
     }
 
     @Override
     public void removeElementById(UUID id) {
-        clientMap = clientMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        clientRepository.deleteObjectById(id);
+
     }
 
     @Override
     public void updateElementById(UUID id, Client newClient) {
-        removeElementById(id);
-        addOnlyOne(newClient);
+
+        clientRepository.updateObjectById(id, newClient);
+
+    }
+
+    @Override
+    public Map<UUID, Client> listToMap(List<Client> clientList) {
+
+        Map<UUID, Client> clientMap = new HashMap<>();
+
+        for (Client client : clientList) {
+
+            clientMap.put(client.getId(), client);
+
+        }
+
+        return clientMap;
+
     }
 
 }

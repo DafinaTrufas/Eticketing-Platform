@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
+@Builder
 public class CardInformation {
     private String balance;
 

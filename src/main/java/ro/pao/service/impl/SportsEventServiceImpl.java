@@ -1,64 +1,108 @@
 package ro.pao.service.impl;
 
-import ro.pao.model.CulturalEvent;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import ro.pao.model.SportsEvent;
-import ro.pao.model.SportsLocation;
-import ro.pao.model.enums.SportsLocationType;
+import ro.pao.model.SportsEvent;
+import ro.pao.model.MailInformation;
+import ro.pao.model.enums.SportsEventType;
+import ro.pao.repository.SportsEventRepository;
+import ro.pao.service.CardService;
 import ro.pao.service.SportsEventService;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class SportsEventServiceImpl implements SportsEventService {
 
-    private static Map<UUID, SportsEvent> sportsEventMap = new HashMap<>();
+    private final SportsEventRepository sportsEventRepository;
 
     @Override
-    public Optional<SportsEvent> getById(UUID id) {
-        return sportsEventMap.values().stream()
-                .filter(element -> id.equals(element.getId()))
-                .findAny();
+    public Optional<SportsEvent> getById(UUID id) throws SQLException {
+
+        Optional<SportsEvent> sportsEvent = sportsEventRepository.getObjectById(id);
+
+        if(sportsEvent.isEmpty()) {
+            throw new RuntimeException("SportsEvent not found!");
+        }
+
+        return sportsEvent;
+
     }
 
     @Override
-    public Optional<SportsEvent> getByLocation(SportsLocation sportsLocation) {
-        return sportsEventMap.values().stream()
-                .filter(element -> sportsLocation.equals(element.getSportsLocation()))
-                .findAny();
+    public Optional<SportsEvent> getByLocation(UUID id) throws SQLException {
+
+        Optional<SportsEvent> sportsEvent = sportsEventRepository.getObjectByLocation(id);
+
+        if(sportsEvent.isEmpty()) {
+            throw new RuntimeException("There is no SportsEvent in this location.");
+        }
+
+        return sportsEvent;
+
     }
 
     @Override
     public Map<UUID, SportsEvent> getAllFromMap() {
-        return sportsEventMap;
+
+        return listToMap(sportsEventRepository.getAll());
+
+    }
+
+    @Override
+    public Map<UUID, SportsEvent> getAllFromMapWithCondition() {
+
+        return listToMap(sportsEventRepository.getAll().stream()
+                .filter(sportsEvent -> sportsEvent.getStage().contains("final"))
+                .collect(Collectors.toList()));
+
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, SportsEvent> sportsEventMap) {
-        SportsEventServiceImpl.sportsEventMap.putAll(sportsEventMap);
+
+        sportsEventRepository.addAllFromGivenList(sportsEventMap.values().stream().toList());
+
     }
 
     @Override
     public void addOnlyOne(SportsEvent sportsEvent) {
-        sportsEventMap.put(sportsEvent.getId(), sportsEvent);
+
+        sportsEventRepository.addNewObject(sportsEvent);
+
     }
 
     @Override
     public void removeElementById(UUID id) {
-        sportsEventMap = sportsEventMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        sportsEventRepository.deleteObjectById(id);
+
     }
 
     @Override
     public void updateElementById(UUID id, SportsEvent newSportsEvent) {
-        removeElementById(id);
-        addOnlyOne(newSportsEvent);
+
+        sportsEventRepository.updateObjectById(id, newSportsEvent);
+
     }
 
-    public Map<UUID, SportsEvent> filterByLocationType(SportsLocationType sportsLocationType) {
-        return sportsEventMap.entrySet().stream()
-                .filter(element -> sportsLocationType.equals(element.getValue().getSportsLocation().getSportsLocationType()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    @Override
+    public Map<UUID, SportsEvent> listToMap(List<SportsEvent> sportsEventList) {
+
+        Map<UUID, SportsEvent> sportsEventMap = new HashMap<>();
+
+        for (SportsEvent sportsEvent : sportsEventList) {
+
+            sportsEventMap.put(sportsEvent.getId(), sportsEvent);
+
+        }
+
+        return sportsEventMap;
+
     }
 
 }

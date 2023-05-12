@@ -1,50 +1,83 @@
 package ro.pao.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import ro.pao.model.CardInformation;
 import ro.pao.model.CulturalEvent;
 import ro.pao.model.MailInformation;
+import ro.pao.repository.CardInformationRepository;
 import ro.pao.service.CardService;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
 
-    private static Map<String, CardInformation> cardInformationMap = new HashMap<>();
+    private final CardInformationRepository cardInformationRepository;
 
     @Override
-    public Optional<CardInformation> getByCardNumber(String cardNumber) {
-        return cardInformationMap.values().stream()
-                .filter(element -> cardNumber.equals(element.getCardNumber()))
-                .findAny();
+    public Optional<CardInformation> getByCardNumber(String cardNumber) throws SQLException {
+
+        Optional<CardInformation> cardInformation = cardInformationRepository.getObjectByCardNumber(cardNumber);
+
+        if(cardInformation.isEmpty()) {
+            throw new RuntimeException("Card not found!");
+        }
+
+        return cardInformation;
+
     }
 
     @Override
     public Map<String, CardInformation> getAllFromMap() {
-        return cardInformationMap;
+
+        return listToMap(cardInformationRepository.getAll());
+
     }
 
     @Override
     public void addAllFromGivenMap(Map<String, CardInformation> cardInformationMap) {
-        CardServiceImpl.cardInformationMap.putAll(cardInformationMap);
+
+        cardInformationRepository.addAllFromGivenList(cardInformationMap.values().stream().toList());
+
     }
 
     @Override
     public void addOnlyOne(CardInformation cardInformation) {
-        cardInformationMap.put(cardInformation.getCardNumber(), cardInformation);
+
+        cardInformationRepository.addNewObject(cardInformation);
+
     }
 
     @Override
     public void removeElementById(UUID id) {
-        cardInformationMap = cardInformationMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        cardInformationRepository.deleteObjectById(id);
+
     }
 
     @Override
     public void updateElementById(UUID id, CardInformation newCardInformation) {
-        removeElementById(id);
-        addOnlyOne(newCardInformation);
+
+        cardInformationRepository.updateObjectById(id, newCardInformation);
+
+    }
+
+    @Override
+    public Map<String, CardInformation> listToMap(List<CardInformation> cardInformationList) {
+
+        Map<String, CardInformation> cardInformationMap = new HashMap<>();
+
+        for (CardInformation cardInformation : cardInformationList) {
+
+            cardInformationMap.put(cardInformation.getCardNumber(), cardInformation);
+
+        }
+
+        return cardInformationMap;
+
     }
 
 }

@@ -1,55 +1,105 @@
 package ro.pao.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import ro.pao.model.Ticket;
+import ro.pao.model.enums.TicketType;
+import ro.pao.repository.TicketRepository;
 import ro.pao.service.TicketService;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
-    private static Map<UUID, Ticket> ticketMap = new HashMap<>();
+    private final TicketRepository ticketRepository;
 
     @Override
-    public Optional<Ticket> getById(UUID id) {
-        return ticketMap.values().stream()
-                .filter(element -> id.equals(element.getId()))
-                .findAny();
+    public Optional<Ticket> getById(UUID id) throws SQLException {
+
+        Optional<Ticket> ticket = ticketRepository.getObjectById(id);
+
+        if(ticket.isEmpty()) {
+            throw new RuntimeException("Ticket not found!");
+        }
+
+        return ticket;
+
     }
 
     @Override
-    public Optional<Ticket> getByEventId(UUID id) {
-        return ticketMap.values().stream()
-                .filter(element -> id.equals(element.getEventId()))
-                .findAny();
+    public Optional<Ticket> getByType(TicketType type) throws SQLException {
+
+        Optional<Ticket> ticket = ticketRepository.getObjectByType(type);
+
+        if(ticket.isEmpty()) {
+            throw new RuntimeException("There is no Ticket of this type.");
+        }
+
+        return ticket;
+
     }
 
     @Override
     public Map<UUID, Ticket> getAllFromMap() {
-        return ticketMap;
+
+        return listToMap(ticketRepository.getAll());
+
+    }
+
+    @Override
+    public Map<UUID, Ticket> getAllFromMapWithCondition() {
+
+        return listToMap(ticketRepository.getAll().stream()
+                .filter(ticket -> ticket.getPrice() < 80.0)
+                .collect(Collectors.toList()));
+
     }
 
     @Override
     public void addAllFromGivenMap(Map<UUID, Ticket> ticketMap) {
-        TicketServiceImpl.ticketMap.putAll(ticketMap);
+
+        ticketRepository.addAllFromGivenList(ticketMap.values().stream().toList());
+
     }
 
     @Override
     public void addOnlyOne(Ticket ticket) {
-        ticketMap.put(ticket.getId(), ticket);
+
+        ticketRepository.addNewObject(ticket);
+
     }
 
     @Override
     public void removeElementById(UUID id) {
-        ticketMap = ticketMap.entrySet().stream()
-                .filter(element -> !id.equals(element.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        ticketRepository.deleteObjectById(id);
+
     }
 
     @Override
     public void updateElementById(UUID id, Ticket newTicket) {
-        removeElementById(id);
-        addOnlyOne(newTicket);
+
+        ticketRepository.updateObjectById(id, newTicket);
+
+    }
+
+    @Override
+    public Map<UUID, Ticket> listToMap(List<Ticket> ticketList) {
+
+        Map<UUID, Ticket> ticketMap = new HashMap<>();
+
+        for (Ticket ticket : ticketList) {
+
+            ticketMap.put(ticket.getId(), ticket);
+
+        }
+
+        return ticketMap;
+
     }
 
 }
