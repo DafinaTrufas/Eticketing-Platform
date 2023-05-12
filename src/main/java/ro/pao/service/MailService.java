@@ -9,24 +9,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MailService {
-
-    Optional<MailInformation> getById(UUID id) throws SQLException;
+public interface MailService extends Service<MailInformation> {
 
     Optional<MailInformation> getByAddress(String address) throws SQLException;
-
-    Map<UUID, MailInformation> getAllFromMap();
-
-    Map<UUID, MailInformation> getAllFromMapWithCondition();
-
-    void addAllFromGivenMap(Map<UUID, MailInformation> mailInformationMap);
-
-    void addOnlyOne(MailInformation mailInformation);
-
-    void removeElementById(UUID id);
-
-    void updateElementById(UUID id, MailInformation newMail);
-
-    Map<UUID, MailInformation> listToMap(List<MailInformation> mailInformationList);
 
 }

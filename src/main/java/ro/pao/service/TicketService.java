@@ -11,24 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface TicketService {
-
-    Optional<Ticket> getById(UUID id) throws SQLException;
+public interface TicketService extends Service<Ticket> {
 
     Optional<Ticket> getByType(TicketType type) throws SQLException;
-
-    Map<UUID, Ticket> getAllFromMap();
-
-    Map<UUID, Ticket> getAllFromMapWithCondition();
-
-    void addAllFromGivenMap(Map<UUID, Ticket> ticketMap);
-
-    void addOnlyOne(Ticket ticket);
-
-    void removeElementById(UUID id);
-
-    void updateElementById(UUID id, Ticket newTicket);
-
-    Map<UUID, Ticket> listToMap(List<Ticket> ticketList);
 
 }

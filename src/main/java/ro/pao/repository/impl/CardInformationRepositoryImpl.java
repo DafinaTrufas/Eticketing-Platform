@@ -3,9 +3,11 @@ package ro.pao.repository.impl;
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.CardInformationMapper;
 import ro.pao.model.CardInformation;
+import ro.pao.model.Client;
 import ro.pao.repository.CardInformationRepository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,20 +17,45 @@ public class CardInformationRepositoryImpl implements CardInformationRepository 
     private static final CardInformationMapper cardInformationMapper = CardInformationMapper.getInstance();
 
     @Override
-    public Optional<CardInformation> getObjectByCardNumber (String cardNumber) throws SQLException {
+    public Optional<CardInformation> getObjectById (UUID id) throws SQLException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
-        String qrySQL = "SELECT * FROM card WHERE cardNumber = ?";
+        String qrySQL = "SELECT * FROM card WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(qrySQL)) {
 
-            stmt.setString(1, cardNumber);
+            stmt.setString(1, id.toString());
 
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
 
                 return cardInformationMapper.mapToCardInformation(resultSet);
+
+            }
+
+        }
+
+        return Optional.empty();
+
+    }
+
+    @Override
+    public Optional<CardInformation> getObjectByName (String firstName, String lastName) throws SQLException {
+
+        Connection connection = DatabaseConfiguration.getDatabaseConnection();
+        String qrySQL = "SELECT * FROM client WHERE firstName = ? AND lastname = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(qrySQL)) {
+
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+
+                return cardInformationMapper.mapToCardInformationList(resultSet).stream().findAny();
 
             }
 

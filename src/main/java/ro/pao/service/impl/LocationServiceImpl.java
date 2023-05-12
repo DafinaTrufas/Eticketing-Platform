@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ro.pao.model.CulturalLocation;
 import ro.pao.model.SportsLocation;
 import ro.pao.model.abstracts.Location;
-import ro.pao.service.CulturalLocationService;
 import ro.pao.service.LocationService;
-import ro.pao.service.SportsLocationService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -15,9 +13,9 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class LocationServiceImpl implements LocationService<Location> {
 
-    private final CulturalLocationService culturalLocationService;
+    private final LocationService<CulturalLocation> culturalLocationService;
 
-    private final SportsLocationService sportsLocationService;
+    private final LocationService<SportsLocation> sportsLocationService;
 
     @Override
     public Optional<Location> getById(UUID id) {
@@ -94,18 +92,18 @@ public class LocationServiceImpl implements LocationService<Location> {
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, Location> LocationMap) {
+    public void addAllFromGivenMap(Map<UUID, Location> locationMap) throws SQLException {
 
-        for (Location Location : LocationMap.values()) {
+        for (Location location : locationMap.values()) {
 
-            addOnlyOne(Location);
+            addOnlyOne(location);
 
         }
 
     }
 
     @Override
-    public void addOnlyOne(Location Location) {
+    public void addOnlyOne(Location Location) throws SQLException {
 
         if (Location instanceof CulturalLocation culturalLocation) {
 

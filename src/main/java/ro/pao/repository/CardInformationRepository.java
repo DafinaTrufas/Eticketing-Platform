@@ -7,18 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CardInformationRepository {
+public interface CardInformationRepository extends Repository<CardInformation> {
 
-    Optional<CardInformation> getObjectByCardNumber(String cardNumber) throws SQLException;
-
-    void deleteObjectById(UUID id);
-
-    void updateObjectById(UUID id, CardInformation newObject);
-
-    void addNewObject(CardInformation cardInformation);
-
-    List<CardInformation> getAll();
-
-    void addAllFromGivenList(List<CardInformation> cardInformationList);
+    Optional<CardInformation> getObjectByName(String firstName, String lastName) throws SQLException;
     
 }

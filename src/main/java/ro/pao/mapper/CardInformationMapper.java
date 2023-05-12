@@ -27,6 +27,7 @@ public class CardInformationMapper {
 
             return Optional.of(
                     CardInformation.builder()
+                            .id(UUID.fromString(resultSet.getString("id")))
                             .balance(resultSet.getString("firstname"))
                             .firstNameOwner(resultSet.getString("firstname"))
                             .lastNameOwner(resultSet.getString("lastname"))
@@ -50,6 +51,7 @@ public class CardInformationMapper {
 
             CardInformationList.add(
                     CardInformation.builder()
+                            .id(UUID.fromString(resultSet.getString("id")))
                             .balance(resultSet.getString("firstname"))
                             .firstNameOwner(resultSet.getString("firstname"))
                             .lastNameOwner(resultSet.getString("lastname"))

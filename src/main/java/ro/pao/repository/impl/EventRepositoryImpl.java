@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ro.pao.model.CulturalEvent;
 import ro.pao.model.SportsEvent;
 import ro.pao.model.abstracts.Event;
-import ro.pao.repository.CulturalEventRepository;
 import ro.pao.repository.EventRepository;
-import ro.pao.repository.SportsEventRepository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -14,11 +12,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class EventRepositoryImpl implements EventRepository {
+public class EventRepositoryImpl implements EventRepository<Event> {
 
-    private final CulturalEventRepository culturalEventRepository;
+    private final EventRepository<CulturalEvent> culturalEventRepository;
 
-    private final SportsEventRepository sportsEventRepository;
+    private final EventRepository<SportsEvent> sportsEventRepository;
 
     @Override
     public Optional<Event> getObjectById(UUID id) throws SQLException {
@@ -30,6 +28,23 @@ public class EventRepositoryImpl implements EventRepository {
         } catch (RuntimeException e) {
 
             sportsEventRepository.getObjectById(id);
+
+        }
+
+        return Optional.empty();
+
+    }
+
+    @Override
+    public Optional<Event> getObjectByLocation(UUID id) throws SQLException {
+
+        try {
+
+            culturalEventRepository.getObjectByLocation(id);
+
+        } catch (RuntimeException e) {
+
+            sportsEventRepository.getObjectByLocation(id);
 
         }
 

@@ -2,16 +2,15 @@ package ro.pao.repository.impl;
 
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.SportsLocationMapper;
-import ro.pao.model.CulturalLocation;
 import ro.pao.model.SportsLocation;
-import ro.pao.repository.SportsLocationRepository;
+import ro.pao.repository.LocationRepository;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class SportsLocationRepositoryImpl implements SportsLocationRepository {
+public class SportsLocationRepositoryImpl implements LocationRepository<SportsLocation> {
 
     private static final SportsLocationMapper sportsLocationMapper = SportsLocationMapper.getInstance();
 

@@ -48,7 +48,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
         try (PreparedStatement stmt = connection.prepareStatement(qrySQL)) {
 
-            stmt.setString(1, type.toString());
+            stmt.setString(1, type.toString().toUpperCase());
 
             ResultSet resultSet = stmt.executeQuery();
 

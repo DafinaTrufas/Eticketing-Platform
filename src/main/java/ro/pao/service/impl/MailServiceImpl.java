@@ -60,14 +60,14 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, MailInformation> mailInformationMap) {
+    public void addAllFromGivenMap(Map<UUID, MailInformation> mailInformationMap) throws SQLException {
 
         mailInformationRepository.addAllFromGivenList(mailInformationMap.values().stream().toList());
 
     }
 
     @Override
-    public void addOnlyOne(MailInformation mailInformation) {
+    public void addOnlyOne(MailInformation mailInformation) throws SQLException {
 
         mailInformationRepository.addNewObject(mailInformation);
 

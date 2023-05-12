@@ -62,14 +62,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, Client> clientMap) {
+    public void addAllFromGivenMap(Map<UUID, Client> clientMap) throws SQLException {
 
         clientRepository.addAllFromGivenList(clientMap.values().stream().toList());
 
     }
 
     @Override
-    public void addOnlyOne(Client client) {
+    public void addOnlyOne(Client client) throws SQLException {
 
         clientRepository.addNewObject(client);
 

@@ -8,24 +8,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface LocationService <T extends Location> {
-
-    Optional<T> getById(UUID id) throws SQLException;
+public interface LocationService <T extends Location> extends Service<T> {
 
     Optional<T> getByCapacity(Integer capacity) throws SQLException;
-
-    Map<UUID, T> getAllFromMap();
-
-    Map<UUID, T> getAllFromMapWithCondition();
-
-    void addAllFromGivenMap(Map<UUID, T> locationMap);
-
-    void addOnlyOne(T location);
-
-    void removeElementById(UUID id);
-
-    void updateElementById(UUID id, T newLocation);
-
-    Map<UUID, T> listToMap(List<T> locationList);
     
 }

@@ -4,8 +4,7 @@ import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.CulturalEventMapper;
 import ro.pao.mapper.EventMapper;
 import ro.pao.model.CulturalEvent;
-import ro.pao.model.enums.CulturalEventType;
-import ro.pao.repository.CulturalEventRepository;
+import ro.pao.repository.EventRepository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CulturalEventRepositoryImpl implements CulturalEventRepository {
+public class CulturalEventRepositoryImpl implements EventRepository<CulturalEvent> {
 
     private static final EventMapper eventMapper = EventMapper.getInstance();
     private static final CulturalEventMapper culturalEventMapper = CulturalEventMapper.getInstance();

@@ -17,11 +17,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class LocationRepositoryImpl implements LocationRepository {
+public class LocationRepositoryImpl implements LocationRepository<Location> {
 
-    private final CulturalLocationRepository culturalLocationRepository;
+    private final LocationRepository<CulturalLocation> culturalLocationRepository;
 
-    private final SportsLocationRepository sportsLocationRepository;
+    private final LocationRepository<SportsLocation> sportsLocationRepository;
 
     @Override
     public Optional<Location> getObjectById(UUID id) throws SQLException {
@@ -33,6 +33,23 @@ public class LocationRepositoryImpl implements LocationRepository {
         } catch (RuntimeException e) {
 
             sportsLocationRepository.getObjectById(id);
+
+        }
+
+        return Optional.empty();
+
+    }
+
+    @Override
+    public Optional<Location> getObjectByCapacity(Integer capacity) throws SQLException {
+
+        try {
+
+            culturalLocationRepository.getObjectByCapacity(capacity);
+
+        } catch (RuntimeException e) {
+
+            sportsLocationRepository.getObjectByCapacity(capacity);
 
         }
 
@@ -73,7 +90,7 @@ public class LocationRepositoryImpl implements LocationRepository {
     }
 
     @Override
-    public void addNewObject (Location location) {
+    public void addNewObject (Location location) throws SQLException {
 
         if (location instanceof CulturalLocation culturalLocation) {
 
@@ -107,7 +124,7 @@ public class LocationRepositoryImpl implements LocationRepository {
     }
 
     @Override
-    public void addAllFromGivenList(List<Location> locationList) {
+    public void addAllFromGivenList(List<Location> locationList) throws SQLException {
 
         for (Location location : locationList) {
 

@@ -1,24 +1,18 @@
 package ro.pao.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ro.pao.model.SportsLocation;
-import ro.pao.model.SportsLocation;
-import ro.pao.model.MailInformation;
-import ro.pao.model.enums.SportsLocationType;
-import ro.pao.repository.SportsLocationRepository;
-import ro.pao.service.CardService;
-import ro.pao.service.SportsLocationService;
+import ro.pao.repository.LocationRepository;
+import ro.pao.service.LocationService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class SportsLocationServiceImpl implements SportsLocationService {
+public class SportsLocationServiceImpl implements LocationService<SportsLocation> {
 
-    private final SportsLocationRepository sportsLocationRepository;
+    private final LocationRepository<SportsLocation> sportsLocationRepository;
 
     @Override
     public Optional<SportsLocation> getById(UUID id) throws SQLException {
@@ -63,14 +57,14 @@ public class SportsLocationServiceImpl implements SportsLocationService {
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, SportsLocation> sportsLocationMap) {
+    public void addAllFromGivenMap(Map<UUID, SportsLocation> sportsLocationMap) throws SQLException {
 
         sportsLocationRepository.addAllFromGivenList(sportsLocationMap.values().stream().toList());
 
     }
 
     @Override
-    public void addOnlyOne(SportsLocation sportsLocation) {
+    public void addOnlyOne(SportsLocation sportsLocation) throws SQLException {
 
         sportsLocationRepository.addNewObject(sportsLocation);
 

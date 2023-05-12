@@ -1,24 +1,18 @@
 package ro.pao.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ro.pao.model.CulturalLocation;
-import ro.pao.model.CulturalLocation;
-import ro.pao.model.MailInformation;
-import ro.pao.model.enums.CulturalLocationType;
-import ro.pao.repository.CulturalLocationRepository;
-import ro.pao.service.CardService;
-import ro.pao.service.CulturalLocationService;
+import ro.pao.repository.LocationRepository;
+import ro.pao.service.LocationService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class CulturalLocationServiceImpl implements CulturalLocationService {
+public class CulturalLocationServiceImpl implements LocationService<CulturalLocation> {
 
-    private final CulturalLocationRepository culturalLocationRepository;
+    private final LocationRepository<CulturalLocation> culturalLocationRepository;
 
     @Override
     public Optional<CulturalLocation> getById(UUID id) throws SQLException {
@@ -63,14 +57,14 @@ public class CulturalLocationServiceImpl implements CulturalLocationService {
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, CulturalLocation> culturalLocationMap) {
+    public void addAllFromGivenMap(Map<UUID, CulturalLocation> culturalLocationMap) throws SQLException {
 
         culturalLocationRepository.addAllFromGivenList(culturalLocationMap.values().stream().toList());
 
     }
 
     @Override
-    public void addOnlyOne(CulturalLocation culturalLocation) {
+    public void addOnlyOne(CulturalLocation culturalLocation) throws SQLException {
 
         culturalLocationRepository.addNewObject(culturalLocation);
 

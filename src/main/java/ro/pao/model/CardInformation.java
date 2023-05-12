@@ -2,6 +2,7 @@ package ro.pao.model;
 
 import lombok.*;
 
+import java.util.UUID;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -9,8 +10,12 @@ import java.util.function.Predicate;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
+@AllArgsConstructor
 @Builder
 public class CardInformation {
+
+    private UUID id;
+
     private String balance;
 
     private String firstNameOwner;
@@ -32,13 +37,6 @@ public class CardInformation {
             System.out.println("The name does not match.");
         }
 
-    }
-
-    public CardInformation(String balance, String firstNameOwner, String lastNameOwner, String cardNumber) {
-        this.balance = balance;
-        this.firstNameOwner = firstNameOwner;
-        this.lastNameOwner = lastNameOwner;
-        this.cardNumber = cardNumber;
     }
 
     @Override

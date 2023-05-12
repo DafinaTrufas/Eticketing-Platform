@@ -8,20 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MailInformationRepository {
-
-    Optional<MailInformation> getObjectById(UUID id) throws SQLException;
+public interface MailInformationRepository extends Repository<MailInformation> {
 
     Optional<MailInformation> getObjectByAddress(String address) throws SQLException;
-
-    void deleteObjectById(UUID id);
-
-    void updateObjectById(UUID id, MailInformation newObject);
-
-    void addNewObject(MailInformation MailInformation);
-
-    List<MailInformation> getAll();
-
-    void addAllFromGivenList(List<MailInformation> MailInformationList);
     
 }

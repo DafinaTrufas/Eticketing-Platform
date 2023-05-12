@@ -1,13 +1,9 @@
 package ro.pao.repository.impl;
 
 import ro.pao.config.DatabaseConfiguration;
-import ro.pao.mapper.CulturalEventMapper;
 import ro.pao.mapper.SportsEventMapper;
-import ro.pao.model.CulturalEvent;
 import ro.pao.model.SportsEvent;
-import ro.pao.model.enums.CulturalEventType;
-import ro.pao.model.enums.SportsEventType;
-import ro.pao.repository.SportsEventRepository;
+import ro.pao.repository.EventRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class SportsEventRepositoryImpl implements SportsEventRepository {
+public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
 
     private static final SportsEventMapper sportsEventMapper = SportsEventMapper.getInstance();
 

@@ -2,16 +2,15 @@ package ro.pao.repository.impl;
 
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.CulturalLocationMapper;
-import ro.pao.model.CulturalEvent;
 import ro.pao.model.CulturalLocation;
-import ro.pao.repository.CulturalLocationRepository;
+import ro.pao.repository.LocationRepository;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CulturalLocationRepositoryImpl implements CulturalLocationRepository {
+public class CulturalLocationRepositoryImpl implements LocationRepository<CulturalLocation> {
 
     private static final CulturalLocationMapper culturalEventMapper = CulturalLocationMapper.getInstance();
 

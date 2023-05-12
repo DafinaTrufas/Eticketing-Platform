@@ -1,20 +1,15 @@
 package ro.pao.application;
 
-import ro.pao.config.DatabaseConfiguration;
 import ro.pao.model.*;
 import ro.pao.model.abstracts.Event;
 import ro.pao.model.abstracts.Location;
 import ro.pao.model.enums.*;
-import ro.pao.repository.CardInformationRepository;
-import ro.pao.repository.CulturalEventRepository;
-import ro.pao.repository.MailInformationRepository;
 import ro.pao.repository.impl.*;
 import ro.pao.service.*;
 import ro.pao.service.impl.*;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -25,17 +20,13 @@ public class Menu {
 
     private static Menu INSTANCE;
 
-    private final EventService eventService = new EventServiceImpl(new CulturalEventServiceImpl(new CulturalEventRepositoryImpl()), new SportsEventServiceImpl(new SportsEventRepositoryImpl()));
+    private final EventService<Event> eventService = new EventServiceImpl(new CulturalEventServiceImpl(new CulturalEventRepositoryImpl()), new SportsEventServiceImpl(new SportsEventRepositoryImpl()));
 
-    private final CulturalEventService culturalEventService = new CulturalEventServiceImpl(new CulturalEventRepositoryImpl());
+    private final EventService<CulturalEvent> culturalEventService = new CulturalEventServiceImpl(new CulturalEventRepositoryImpl());
 
-    private final SportsEventService sportsEventService = new SportsEventServiceImpl(new SportsEventRepositoryImpl());
+    private final EventService<SportsEvent> sportsEventService = new SportsEventServiceImpl(new SportsEventRepositoryImpl());
 
-    private final LocationService locationService = new LocationServiceImpl(new CulturalLocationServiceImpl(new CulturalLocationRepositoryImpl()), new SportsLocationServiceImpl(new SportsLocationRepositoryImpl()));
-
-    private final CulturalLocationService culturalLocationService = new CulturalLocationServiceImpl(new CulturalLocationRepositoryImpl());
-
-    private final SportsLocationService sportsLocationService = new SportsLocationServiceImpl(new SportsLocationRepositoryImpl());
+    private final LocationService<Location> locationService = new LocationServiceImpl(new CulturalLocationServiceImpl(new CulturalLocationRepositoryImpl()), new SportsLocationServiceImpl(new SportsLocationRepositoryImpl()));
 
     private final ClientService clientService = new ClientServiceImpl(new ClientRepositoryImpl());
 
@@ -95,7 +86,7 @@ public class Menu {
 
     }
 
-    public void addLocationOfEachType() {
+    public void addLocationOfEachType() throws SQLException {
 
         Map<UUID, Location> locationMap = new HashMap<>();
 
@@ -142,7 +133,7 @@ public class Menu {
 
     }
 
-    public void addAndFilterClients() {
+    public void addAndFilterClients() throws SQLException {
 
         Map<UUID, Client> clientMap = Stream.of(Client.builder()
                                                     .id(UUID.randomUUID())
@@ -167,7 +158,7 @@ public class Menu {
 
     }
 
-    public void addAndFilterTickets() {
+    public void addAndGetByTypeTickets() throws SQLException {
 
         Map<UUID, Ticket> ticketMap = Stream.of(
                                         Ticket.builder()
@@ -188,8 +179,8 @@ public class Menu {
 
         ticketService.addAllFromGivenMap(ticketMap);
 
-        System.out.println("\nBiletele, dupa filtrare (pret < 80):");
-        ticketService.getAllFromMapWithCondition().entrySet().stream().forEach(System.out::println);
+        System.out.println("\nDetaliile unui bilet de categorie VIP (daca un astfel de eveniment exista):");
+        System.out.println(ticketService.getByType(TicketType.VIP));
 
     }
 

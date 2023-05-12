@@ -8,24 +8,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface EventService <T extends Event> {
+public interface EventService <T extends Event> extends Service<T> {
 
-    Optional<T> getById(UUID id);
-
-    Optional<T> getByLocation(UUID id);
-
-    Map<UUID, T> getAllFromMap();
-
-    Map<UUID, T> getAllFromMapWithCondition();
-
-    void addAllFromGivenMap(Map<UUID, T> eventMap) throws SQLException;
-
-    void addOnlyOne(T event) throws SQLException;
-
-    void removeElementById(UUID id);
-
-    void updateElementById(UUID id, T newEvent);
-
-    Map<UUID, T> listToMap(List<T> eventList);
+    Optional<T> getByLocation(UUID id) throws SQLException;
 
 }

@@ -1,24 +1,18 @@
 package ro.pao.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ro.pao.model.SportsEvent;
-import ro.pao.model.SportsEvent;
-import ro.pao.model.MailInformation;
-import ro.pao.model.enums.SportsEventType;
-import ro.pao.repository.SportsEventRepository;
-import ro.pao.service.CardService;
-import ro.pao.service.SportsEventService;
+import ro.pao.repository.EventRepository;
+import ro.pao.service.EventService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class SportsEventServiceImpl implements SportsEventService {
+public class SportsEventServiceImpl implements EventService<SportsEvent> {
 
-    private final SportsEventRepository sportsEventRepository;
+    private final EventRepository<SportsEvent> sportsEventRepository;
 
     @Override
     public Optional<SportsEvent> getById(UUID id) throws SQLException {
@@ -63,14 +57,14 @@ public class SportsEventServiceImpl implements SportsEventService {
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, SportsEvent> sportsEventMap) {
+    public void addAllFromGivenMap(Map<UUID, SportsEvent> sportsEventMap) throws SQLException {
 
         sportsEventRepository.addAllFromGivenList(sportsEventMap.values().stream().toList());
 
     }
 
     @Override
-    public void addOnlyOne(SportsEvent sportsEvent) {
+    public void addOnlyOne(SportsEvent sportsEvent) throws SQLException {
 
         sportsEventRepository.addNewObject(sportsEvent);
 

@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ro.pao.model.CulturalEvent;
 import ro.pao.model.SportsEvent;
 import ro.pao.model.abstracts.Event;
-import ro.pao.service.CulturalEventService;
 import ro.pao.service.EventService;
-import ro.pao.service.SportsEventService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -15,9 +13,9 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService<Event> {
 
-    private final CulturalEventService culturalEventService;
+    private final EventService<CulturalEvent> culturalEventService;
 
-    private final SportsEventService sportsEventService;
+    private final EventService<SportsEvent> sportsEventService;
 
     @Override
     public Optional<Event> getById(UUID id) {

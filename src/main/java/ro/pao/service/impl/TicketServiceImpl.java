@@ -60,14 +60,14 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, Ticket> ticketMap) {
+    public void addAllFromGivenMap(Map<UUID, Ticket> ticketMap) throws SQLException {
 
         ticketRepository.addAllFromGivenList(ticketMap.values().stream().toList());
 
     }
 
     @Override
-    public void addOnlyOne(Ticket ticket) {
+    public void addOnlyOne(Ticket ticket) throws SQLException {
 
         ticketRepository.addNewObject(ticket);
 

@@ -1,25 +1,18 @@
 package ro.pao.service.impl;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ro.pao.model.CulturalEvent;
-import ro.pao.model.CulturalEvent;
-import ro.pao.model.MailInformation;
-import ro.pao.model.enums.CulturalEventType;
-import ro.pao.repository.CulturalEventRepository;
-import ro.pao.service.CardService;
-import ro.pao.service.CulturalEventService;
+import ro.pao.repository.EventRepository;
+import ro.pao.service.EventService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class CulturalEventServiceImpl implements CulturalEventService {
+public class CulturalEventServiceImpl implements EventService<CulturalEvent> {
 
-    private final CulturalEventRepository culturalEventRepository;
+    private final EventRepository<CulturalEvent> culturalEventRepository;
 
     @Override
     public Optional<CulturalEvent> getById(UUID id) throws SQLException {
@@ -64,7 +57,7 @@ public class CulturalEventServiceImpl implements CulturalEventService {
     }
 
     @Override
-    public void addAllFromGivenMap(Map<UUID, CulturalEvent> culturalEventMap) {
+    public void addAllFromGivenMap(Map<UUID, CulturalEvent> culturalEventMap) throws SQLException {
 
         culturalEventRepository.addAllFromGivenList(culturalEventMap.values().stream().toList());
 

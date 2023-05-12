@@ -3,12 +3,14 @@ package ro.pao.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ro.pao.model.CardInformation;
+import ro.pao.model.Client;
 import ro.pao.model.CulturalEvent;
 import ro.pao.model.MailInformation;
 import ro.pao.repository.CardInformationRepository;
 import ro.pao.service.CardService;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,9 +20,9 @@ public class CardServiceImpl implements CardService {
     private final CardInformationRepository cardInformationRepository;
 
     @Override
-    public Optional<CardInformation> getByCardNumber(String cardNumber) throws SQLException {
+    public Optional<CardInformation> getById(UUID id) throws SQLException {
 
-        Optional<CardInformation> cardInformation = cardInformationRepository.getObjectByCardNumber(cardNumber);
+        Optional<CardInformation> cardInformation = cardInformationRepository.getObjectById(id);
 
         if(cardInformation.isEmpty()) {
             throw new RuntimeException("Card not found!");
@@ -31,21 +33,43 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Map<String, CardInformation> getAllFromMap() {
+    public Optional<CardInformation> getByName(String firstName, String lastName) throws SQLException {
+
+        Optional<CardInformation> cardInformation = cardInformationRepository.getObjectByName(firstName, lastName);
+
+        if(cardInformation.isEmpty()) {
+            throw new RuntimeException("There is no card owned by this client.");
+        }
+
+        return cardInformation;
+
+    }
+
+    @Override
+    public Map<UUID, CardInformation> getAllFromMap() {
 
         return listToMap(cardInformationRepository.getAll());
 
     }
 
     @Override
-    public void addAllFromGivenMap(Map<String, CardInformation> cardInformationMap) {
+    public Map<UUID, CardInformation> getAllFromMapWithCondition() {
+
+        return listToMap(cardInformationRepository.getAll().stream()
+                .filter(card -> card.getBalance().equals("euro".toLowerCase()))
+                .collect(Collectors.toList()));
+
+    }
+
+    @Override
+    public void addAllFromGivenMap(Map<UUID, CardInformation> cardInformationMap) throws SQLException {
 
         cardInformationRepository.addAllFromGivenList(cardInformationMap.values().stream().toList());
 
     }
 
     @Override
-    public void addOnlyOne(CardInformation cardInformation) {
+    public void addOnlyOne(CardInformation cardInformation) throws SQLException {
 
         cardInformationRepository.addNewObject(cardInformation);
 
@@ -66,13 +90,13 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Map<String, CardInformation> listToMap(List<CardInformation> cardInformationList) {
+    public Map<UUID, CardInformation> listToMap(List<CardInformation> cardInformationList) {
 
-        Map<String, CardInformation> cardInformationMap = new HashMap<>();
+        Map<UUID, CardInformation> cardInformationMap = new HashMap<>();
 
         for (CardInformation cardInformation : cardInformationList) {
 
-            cardInformationMap.put(cardInformation.getCardNumber(), cardInformation);
+            cardInformationMap.put(cardInformation.getId(), cardInformation);
 
         }
 
