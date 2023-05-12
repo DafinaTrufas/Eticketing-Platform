@@ -1,4 +1,4 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.SportsLocationMapper;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class SportsLocationRepositoryImpl implements LocationRepository<SportsLocation> {
+public non-sealed class SportsLocationRepositoryImpl implements LocationRepository<SportsLocation> {
 
     private static final SportsLocationMapper sportsLocationMapper = SportsLocationMapper.getInstance();
 

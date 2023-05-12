@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface LocationService <T extends Location> extends Service<T> {
+public sealed interface LocationService <T extends Location> extends Service<T> permits CulturalLocationServiceImpl, LocationServiceImpl, SportsLocationServiceImpl {
 
     Optional<T> getByCapacity(Integer capacity) throws SQLException;
     

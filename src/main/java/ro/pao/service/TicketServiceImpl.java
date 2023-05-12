@@ -1,19 +1,17 @@
-package ro.pao.service.impl;
+package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ro.pao.model.Ticket;
 import ro.pao.model.enums.TicketType;
 import ro.pao.repository.TicketRepository;
 import ro.pao.service.TicketService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class TicketServiceImpl implements TicketService {
+public non-sealed class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
 

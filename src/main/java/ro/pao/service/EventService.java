@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface EventService <T extends Event> extends Service<T> {
+public sealed interface EventService <T extends Event> extends Service<T> permits CulturalEventServiceImpl, EventServiceImpl, SportsEventServiceImpl {
 
     Optional<T> getByLocation(UUID id) throws SQLException;
 

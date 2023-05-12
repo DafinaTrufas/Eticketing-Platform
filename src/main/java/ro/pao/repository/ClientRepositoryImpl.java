@@ -1,4 +1,4 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.ClientMapper;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ClientRepositoryImpl implements ClientRepository {
+public non-sealed class ClientRepositoryImpl implements ClientRepository {
 
     private static final ClientMapper culturalEventMapper = ClientMapper.getInstance();
 

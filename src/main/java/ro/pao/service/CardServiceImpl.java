@@ -1,21 +1,16 @@
-package ro.pao.service.impl;
+package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ro.pao.model.CardInformation;
-import ro.pao.model.Client;
-import ro.pao.model.CulturalEvent;
-import ro.pao.model.MailInformation;
 import ro.pao.repository.CardInformationRepository;
 import ro.pao.service.CardService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class CardServiceImpl implements CardService {
+public non-sealed class CardServiceImpl implements CardService {
 
     private final CardInformationRepository cardInformationRepository;
 

@@ -1,4 +1,4 @@
-package ro.pao.service.impl;
+package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.model.SportsEvent;
@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class SportsEventServiceImpl implements EventService<SportsEvent> {
+public non-sealed class SportsEventServiceImpl implements EventService<SportsEvent> {
 
     private final EventRepository<SportsEvent> sportsEventRepository;
 

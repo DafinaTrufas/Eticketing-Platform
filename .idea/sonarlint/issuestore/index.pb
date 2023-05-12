@@ -15,10 +15,6 @@ _
 /src/main/java/ro/pao/model/MailInformation.java,3\6\369ed71fff935adaf5850e74d51843e99511ea62
 g
 7src/main/java/ro/pao/model/enums/CulturalEventType.java,b\c\bc8182ff8b022849c193c0b1638208d18b13e623
-_
-/src/main/java/ro/pao/model/abstracts/Event.java,8\2\821e394c5d51d121f6390fbab5d16f6d05361a72
-]
--src/main/java/ro/pao/model/CulturalEvent.java,2\5\2593d87aa0f6ea18552b9f5451f8feeece46e255
 V
 &src/main/java/ro/pao/model/Client.java,6\5\65595b29ffebc58cdef463c99ba2687370b8040a
 f

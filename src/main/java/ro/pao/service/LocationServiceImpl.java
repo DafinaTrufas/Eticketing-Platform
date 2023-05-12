@@ -1,4 +1,4 @@
-package ro.pao.service.impl;
+package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.model.CulturalLocation;
@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-public class LocationServiceImpl implements LocationService<Location> {
+public non-sealed class LocationServiceImpl implements LocationService<Location> {
 
     private final LocationService<CulturalLocation> culturalLocationService;
 

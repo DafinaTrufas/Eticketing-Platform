@@ -1,15 +1,10 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import lombok.RequiredArgsConstructor;
-import ro.pao.config.DatabaseConfiguration;
-import ro.pao.mapper.EventMapper;
-import ro.pao.model.CulturalEvent;
 import ro.pao.model.CulturalLocation;
-import ro.pao.model.SportsEvent;
 import ro.pao.model.SportsLocation;
-import ro.pao.model.abstracts.Event;
 import ro.pao.model.abstracts.Location;
-import ro.pao.repository.*;
+import ro.pao.repository.LocationRepository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class LocationRepositoryImpl implements LocationRepository<Location> {
+public non-sealed class LocationRepositoryImpl implements LocationRepository<Location> {
 
     private final LocationRepository<CulturalLocation> culturalLocationRepository;
 

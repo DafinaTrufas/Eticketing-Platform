@@ -1,4 +1,4 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.model.CulturalEvent;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class EventRepositoryImpl implements EventRepository<Event> {
+public non-sealed class EventRepositoryImpl implements EventRepository<Event> {
 
     private final EventRepository<CulturalEvent> culturalEventRepository;
 

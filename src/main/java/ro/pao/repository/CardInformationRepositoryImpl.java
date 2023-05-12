@@ -1,18 +1,15 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.CardInformationMapper;
 import ro.pao.model.CardInformation;
-import ro.pao.model.Client;
-import ro.pao.repository.CardInformationRepository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CardInformationRepositoryImpl implements CardInformationRepository {
+public non-sealed class CardInformationRepositoryImpl implements CardInformationRepository {
 
     private static final CardInformationMapper cardInformationMapper = CardInformationMapper.getInstance();
 

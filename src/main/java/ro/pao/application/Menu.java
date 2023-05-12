@@ -4,9 +4,8 @@ import ro.pao.model.*;
 import ro.pao.model.abstracts.Event;
 import ro.pao.model.abstracts.Location;
 import ro.pao.model.enums.*;
-import ro.pao.repository.impl.*;
+import ro.pao.repository.*;
 import ro.pao.service.*;
-import ro.pao.service.impl.*;
 
 import java.sql.*;
 import java.time.LocalDate;

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import ro.pao.application.Menu;
 import ro.pao.model.CulturalEvent;
-import ro.pao.service.impl.CulturalEventServiceImpl;
 
 import java.sql.SQLException;
 import java.util.UUID;

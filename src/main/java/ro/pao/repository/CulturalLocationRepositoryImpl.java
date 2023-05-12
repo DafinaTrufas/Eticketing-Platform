@@ -1,4 +1,4 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.CulturalLocationMapper;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class CulturalLocationRepositoryImpl implements LocationRepository<CulturalLocation> {
+public non-sealed class CulturalLocationRepositoryImpl implements LocationRepository<CulturalLocation> {
 
     private static final CulturalLocationMapper culturalEventMapper = CulturalLocationMapper.getInstance();
 

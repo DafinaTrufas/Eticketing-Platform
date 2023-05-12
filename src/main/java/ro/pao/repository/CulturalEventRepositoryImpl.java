@@ -1,30 +1,28 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
-import ro.pao.mapper.SportsEventMapper;
-import ro.pao.model.SportsEvent;
+import ro.pao.mapper.CulturalEventMapper;
+import ro.pao.mapper.EventMapper;
+import ro.pao.model.CulturalEvent;
 import ro.pao.repository.EventRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
+public non-sealed class CulturalEventRepositoryImpl implements EventRepository<CulturalEvent> {
 
-    private static final SportsEventMapper sportsEventMapper = SportsEventMapper.getInstance();
+    private static final EventMapper eventMapper = EventMapper.getInstance();
+    private static final CulturalEventMapper culturalEventMapper = CulturalEventMapper.getInstance();
 
     @Override
-    public Optional<SportsEvent> getObjectById (UUID id) throws SQLException {
+    public Optional<CulturalEvent> getObjectById (UUID id) throws SQLException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
-        String qrySQL = "SELECT * FROM sports_event WHERE id = ?";
+        String qrySQL = "SELECT * FROM cultural_event WHERE id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(qrySQL)) {
 
@@ -34,7 +32,7 @@ public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
 
             if (resultSet.next()) {
 
-                return sportsEventMapper.mapToSportsEvent(resultSet);
+                return culturalEventMapper.mapToCulturalEvent(resultSet);
 
             }
 
@@ -45,10 +43,10 @@ public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
     }
 
     @Override
-    public Optional<SportsEvent> getObjectByLocation (UUID id) throws SQLException {
+    public Optional<CulturalEvent> getObjectByLocation (UUID id) throws SQLException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
-        String qrySQL = "SELECT * FROM sports_event WHERE location_id = ?";
+        String qrySQL = "SELECT * FROM cultural_event WHERE location_id = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(qrySQL)) {
 
@@ -58,7 +56,7 @@ public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
 
             if (resultSet.next()) {
 
-                return sportsEventMapper.mapToSportsEventList(resultSet).stream().findAny();
+                return culturalEventMapper.mapToCulturalEventList(resultSet).stream().findAny();
 
             }
 
@@ -71,7 +69,7 @@ public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
     @Override
     public void deleteObjectById(UUID id) {
 
-        String updateNameSql = "DELETE FROM sports_event WHERE id=?";
+        String updateNameSql = "DELETE FROM cultural_event WHERE id=?";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
@@ -90,16 +88,16 @@ public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
     }
 
     @Override
-    public void updateObjectById(UUID id, SportsEvent newObject) {
+    public void updateObjectById(UUID id, CulturalEvent newObject) {
 
-        String updateNameSql = "UPDATE sports_event SET competition=?, stage=? WHERE id=?";
+        String updateNameSql = "UPDATE cultural_event SET title=?, description=? WHERE id=?";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateNameSql)) {
 
-            preparedStatement.setString(1, newObject.getCompetition());
-            preparedStatement.setString(2, newObject.getStage());
+            preparedStatement.setString(1, newObject.getTitle());
+            preparedStatement.setString(2, newObject.getDescription());
             preparedStatement.setString(3, id.toString());
 
             preparedStatement.executeUpdate();
@@ -112,26 +110,26 @@ public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
 
     }
 
-    public void addNewObject (SportsEvent sportsEvent) {
+    public void addNewObject (CulturalEvent culturalEvent) {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         String qrySQLParent = "INSERT INTO event (id, creationDate) VALUES(?, ?)";
-        String qrySQLChild = "INSERT INTO sports_event VALUES(?, ?, ?)";
+        String qrySQLChild = "INSERT INTO cultural_event VALUES(?, ?, ?)";
 
-        LocalDateTime creationDate = LocalDateTime.now();
-        java.util.Date creationUtilDate = Date.from(creationDate.atZone(ZoneId.systemDefault()).toInstant());
-        java.sql.Date creationSqlDate = new java.sql.Date(creationUtilDate.getTime());
+        LocalDateTime startDate = LocalDateTime.now();
+        java.util.Date startUtilDate = java.util.Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant());
+        java.sql.Date startSqlDate = new java.sql.Date(startUtilDate.getTime());
 
         try (PreparedStatement stmtParent = connection.prepareStatement(qrySQLParent);
              PreparedStatement stmtChild = connection.prepareStatement(qrySQLChild)) {
 
-            stmtParent.setString(1, sportsEvent.getId().toString());
-            stmtParent.setDate(2, creationSqlDate);
+            stmtParent.setString(1, culturalEvent.getId().toString());
+            stmtParent.setDate(2, startSqlDate);
 
-            stmtChild.setString(1, sportsEvent.getId().toString());
-            stmtChild.setString(2, sportsEvent.getCompetition());
-            stmtChild.setString(3, sportsEvent.getStage());
+            stmtChild.setString(1, culturalEvent.getId().toString());
+            stmtChild.setString(2, culturalEvent.getTitle());
+            stmtChild.setString(3, culturalEvent.getDescription());
 
             stmtParent.executeUpdate();
             stmtChild.executeUpdate();
@@ -145,21 +143,19 @@ public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
     }
 
     @Override
-    public List<SportsEvent> getAll() {
+    public List<CulturalEvent> getAll() {
 
-        String selectSql = "SELECT * FROM sports_event";
+        String selectSql = "SELECT * FROM cultural_event";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectSql)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            return sportsEventMapper.mapToSportsEventList(resultSet);
+            return culturalEventMapper.mapToCulturalEventList(resultSet);
 
         } catch (SQLException e) {
-
             e.printStackTrace();
-
         }
 
         return List.of();
@@ -167,9 +163,9 @@ public class SportsEventRepositoryImpl implements EventRepository<SportsEvent> {
     }
 
     @Override
-    public void addAllFromGivenList(List<SportsEvent> sportsEventList) {
+    public void addAllFromGivenList(List<CulturalEvent> culturalEventList) {
 
-        sportsEventList.forEach(this::addNewObject);
+        culturalEventList.forEach(this::addNewObject);
 
     }
 

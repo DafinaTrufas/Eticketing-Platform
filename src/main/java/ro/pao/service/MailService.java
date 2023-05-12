@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MailService extends Service<MailInformation> {
+public sealed interface MailService extends Service<MailInformation> permits MailServiceImpl {
 
     Optional<MailInformation> getByAddress(String address) throws SQLException;
 

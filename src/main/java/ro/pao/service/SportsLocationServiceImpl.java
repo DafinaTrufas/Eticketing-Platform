@@ -1,4 +1,4 @@
-package ro.pao.service.impl;
+package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.model.SportsLocation;
@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class SportsLocationServiceImpl implements LocationService<SportsLocation> {
+public non-sealed class SportsLocationServiceImpl implements LocationService<SportsLocation> {
 
     private final LocationRepository<SportsLocation> sportsLocationRepository;
 

@@ -1,8 +1,7 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.TicketMapper;
-import ro.pao.model.SportsLocation;
 import ro.pao.model.Ticket;
 import ro.pao.model.enums.TicketType;
 import ro.pao.repository.TicketRepository;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class TicketRepositoryImpl implements TicketRepository {
+public non-sealed class TicketRepositoryImpl implements TicketRepository {
 
     private static final TicketMapper ticketMapper = TicketMapper.getInstance();
 

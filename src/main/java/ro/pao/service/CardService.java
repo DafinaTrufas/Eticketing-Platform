@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CardService extends Service<CardInformation> {
+public sealed interface CardService extends Service<CardInformation> permits CardServiceImpl{
 
     Optional<CardInformation> getByName(String firstName, String lastName) throws SQLException;
 

@@ -1,12 +1,8 @@
-package ro.pao.service.impl;
+package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ro.pao.model.Client;
-import ro.pao.model.CulturalEvent;
-import ro.pao.model.MailInformation;
 import ro.pao.repository.ClientRepository;
-import ro.pao.service.CardService;
 import ro.pao.service.ClientService;
 
 import java.sql.SQLException;
@@ -15,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class ClientServiceImpl implements ClientService {
+public non-sealed class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
 

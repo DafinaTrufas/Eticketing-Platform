@@ -1,8 +1,7 @@
-package ro.pao.repository.impl;
+package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
 import ro.pao.mapper.MailInformationMapper;
-import ro.pao.model.CulturalLocation;
 import ro.pao.model.MailInformation;
 import ro.pao.repository.MailInformationRepository;
 
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class MailInformationRepositoryImpl implements MailInformationRepository {
+public non-sealed class MailInformationRepositoryImpl implements MailInformationRepository {
 
     private static final MailInformationMapper mailInformationMapper = MailInformationMapper.getInstance();
 

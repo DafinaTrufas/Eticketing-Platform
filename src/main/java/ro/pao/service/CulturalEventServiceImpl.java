@@ -1,4 +1,4 @@
-package ro.pao.service.impl;
+package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.model.CulturalEvent;
@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class CulturalEventServiceImpl implements EventService<CulturalEvent> {
+public non-sealed class CulturalEventServiceImpl implements EventService<CulturalEvent> {
 
     private final EventRepository<CulturalEvent> culturalEventRepository;
 

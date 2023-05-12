@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface TicketService extends Service<Ticket> {
+public sealed interface TicketService extends Service<Ticket> permits TicketServiceImpl {
 
     Optional<Ticket> getByType(TicketType type) throws SQLException;
 

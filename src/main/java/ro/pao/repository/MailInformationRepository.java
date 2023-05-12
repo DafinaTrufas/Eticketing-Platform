@@ -1,14 +1,12 @@
 package ro.pao.repository;
 
-import ro.pao.model.CulturalLocation;
 import ro.pao.model.MailInformation;
+import ro.pao.repository.MailInformationRepositoryImpl;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public interface MailInformationRepository extends Repository<MailInformation> {
+public sealed interface MailInformationRepository extends Repository<MailInformation> permits MailInformationRepositoryImpl {
 
     Optional<MailInformation> getObjectByAddress(String address) throws SQLException;
     

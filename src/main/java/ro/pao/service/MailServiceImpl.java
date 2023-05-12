@@ -1,19 +1,16 @@
-package ro.pao.service.impl;
+package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import ro.pao.model.MailInformation;
 import ro.pao.repository.MailInformationRepository;
-import ro.pao.service.CardService;
 import ro.pao.service.MailService;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class MailServiceImpl implements MailService {
+public non-sealed class MailServiceImpl implements MailService {
 
     private final MailInformationRepository mailInformationRepository;
 

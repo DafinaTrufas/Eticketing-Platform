@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ClientService extends Service<Client> {
+public sealed interface ClientService extends Service<Client> permits ClientServiceImpl {
 
     Optional<Client> getByBirthDate(LocalDate date) throws SQLException;
 
