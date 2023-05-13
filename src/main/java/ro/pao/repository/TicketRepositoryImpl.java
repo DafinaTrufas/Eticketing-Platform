@@ -1,7 +1,9 @@
 package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.mapper.TicketMapper;
+import ro.pao.model.Client;
 import ro.pao.model.Ticket;
 import ro.pao.model.enums.TicketType;
 import ro.pao.repository.TicketRepository;
@@ -16,7 +18,7 @@ public non-sealed class TicketRepositoryImpl implements TicketRepository {
     private static final TicketMapper ticketMapper = TicketMapper.getInstance();
 
     @Override
-    public Optional<Ticket> getObjectById (UUID id) throws SQLException {
+    public Optional<Ticket> getObjectById (UUID id) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM ticket WHERE id = ?";
@@ -27,20 +29,22 @@ public non-sealed class TicketRepositoryImpl implements TicketRepository {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            Optional<Ticket> ticket = ticketMapper.mapToTicket(resultSet);
 
-                return ticketMapper.mapToTicket(resultSet);
+            if (ticket.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista niciun bilet cu acest id!");
 
             }
 
-        }
+            return ticketMapper.mapToTicket(resultSet);
 
-        return Optional.empty();
+        }
 
     }
 
     @Override
-    public Optional<Ticket> getObjectByType (TicketType type) throws SQLException {
+    public Optional<Ticket> getObjectByType (TicketType type) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM ticket WHERE type = ?";
@@ -51,15 +55,17 @@ public non-sealed class TicketRepositoryImpl implements TicketRepository {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            List<Ticket> ticketList = ticketMapper.mapToTicketList(resultSet);
 
-                return ticketMapper.mapToTicketList(resultSet).stream().findAny();
+            if (ticketList.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista niciun bilet cu acest id!");
 
             }
 
-        }
+            return Optional.ofNullable(ticketList.get(0));
 
-        return Optional.empty();
+        }
 
     }
 

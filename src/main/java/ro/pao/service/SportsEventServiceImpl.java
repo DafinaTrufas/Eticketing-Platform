@@ -1,12 +1,16 @@
 package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.exceptions.ObjectNotFoundException;
+import ro.pao.model.MailInformation;
 import ro.pao.model.SportsEvent;
 import ro.pao.repository.EventRepository;
 import ro.pao.service.EventService;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -14,13 +18,25 @@ public non-sealed class SportsEventServiceImpl implements EventService<SportsEve
 
     private final EventRepository<SportsEvent> sportsEventRepository;
 
+    private static final Logger logger = Logger.getGlobal();
+
     @Override
     public Optional<SportsEvent> getById(UUID id) throws SQLException {
 
-        Optional<SportsEvent> sportsEvent = sportsEventRepository.getObjectById(id);
+        Optional<SportsEvent> sportsEvent = Optional.empty();
 
-        if(sportsEvent.isEmpty()) {
-            throw new RuntimeException("SportsEvent not found!");
+        try {
+
+            sportsEvent = sportsEventRepository.getObjectById(id);
+
+        } catch (ObjectNotFoundException e) {
+
+            logger.log(Level.WARNING, e.getMessage());
+
+        } catch (Exception e) {
+
+            logger.log(Level.SEVERE, e.getMessage());
+
         }
 
         return sportsEvent;

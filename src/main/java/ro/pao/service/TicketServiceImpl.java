@@ -1,6 +1,8 @@
 package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.exceptions.ObjectNotFoundException;
+import ro.pao.model.MailInformation;
 import ro.pao.model.Ticket;
 import ro.pao.model.enums.TicketType;
 import ro.pao.repository.TicketRepository;
@@ -8,6 +10,8 @@ import ro.pao.service.TicketService;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -15,13 +19,25 @@ public non-sealed class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
 
+    private static final Logger logger = Logger.getGlobal();
+
     @Override
     public Optional<Ticket> getById(UUID id) throws SQLException {
 
-        Optional<Ticket> ticket = ticketRepository.getObjectById(id);
+        Optional<Ticket> ticket = Optional.empty();
 
-        if(ticket.isEmpty()) {
-            throw new RuntimeException("Ticket not found!");
+        try {
+
+            ticket = ticketRepository.getObjectById(id);
+
+        } catch (ObjectNotFoundException e) {
+
+            logger.log(Level.WARNING, e.getMessage());
+
+        } catch (Exception e) {
+
+            logger.log(Level.SEVERE, e.getMessage());
+
         }
 
         return ticket;
@@ -31,10 +47,20 @@ public non-sealed class TicketServiceImpl implements TicketService {
     @Override
     public Optional<Ticket> getByType(TicketType type) throws SQLException {
 
-        Optional<Ticket> ticket = ticketRepository.getObjectByType(type);
+        Optional<Ticket> ticket = Optional.empty();
 
-        if(ticket.isEmpty()) {
-            throw new RuntimeException("There is no Ticket of this type.");
+        try {
+
+            ticket = ticketRepository.getObjectByType(type);
+
+        } catch (ObjectNotFoundException e) {
+
+            logger.log(Level.WARNING, e.getMessage());
+
+        } catch (Exception e) {
+
+            logger.log(Level.SEVERE, e.getMessage());
+
         }
 
         return ticket;

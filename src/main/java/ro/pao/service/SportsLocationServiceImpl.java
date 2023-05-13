@@ -1,12 +1,15 @@
 package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.SportsLocation;
 import ro.pao.repository.LocationRepository;
 import ro.pao.service.LocationService;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -14,13 +17,25 @@ public non-sealed class SportsLocationServiceImpl implements LocationService<Spo
 
     private final LocationRepository<SportsLocation> sportsLocationRepository;
 
+    private static final Logger logger = Logger.getGlobal();
+
     @Override
     public Optional<SportsLocation> getById(UUID id) throws SQLException {
 
-        Optional<SportsLocation> sportsLocation = sportsLocationRepository.getObjectById(id);
+        Optional<SportsLocation> sportsLocation = Optional.empty();
 
-        if(sportsLocation.isEmpty()) {
-            throw new RuntimeException("SportsLocation not found!");
+        try {
+
+            sportsLocation = sportsLocationRepository.getObjectById(id);
+
+        } catch (ObjectNotFoundException e) {
+
+            logger.log(Level.WARNING, e.getMessage());
+
+        } catch (Exception e) {
+
+            logger.log(Level.SEVERE, e.getMessage());
+
         }
 
         return sportsLocation;

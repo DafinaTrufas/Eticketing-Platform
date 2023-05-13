@@ -1,12 +1,16 @@
 package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.exceptions.ObjectNotFoundException;
+import ro.pao.model.Client;
 import ro.pao.model.CulturalEvent;
 import ro.pao.repository.EventRepository;
 import ro.pao.service.EventService;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -14,13 +18,25 @@ public non-sealed class CulturalEventServiceImpl implements EventService<Cultura
 
     private final EventRepository<CulturalEvent> culturalEventRepository;
 
+    private static final Logger logger = Logger.getGlobal();
+
     @Override
     public Optional<CulturalEvent> getById(UUID id) throws SQLException {
 
-        Optional<CulturalEvent> culturalEvent = culturalEventRepository.getObjectById(id);
+        Optional<CulturalEvent> culturalEvent = Optional.empty();
 
-        if(culturalEvent.isEmpty()) {
-            throw new RuntimeException("CulturalEvent not found!");
+        try {
+
+            culturalEvent = culturalEventRepository.getObjectById(id);
+
+        } catch (ObjectNotFoundException e) {
+
+            logger.log(Level.WARNING, e.getMessage());
+
+        } catch (Exception e) {
+
+            logger.log(Level.SEVERE, e.getMessage());
+
         }
 
         return culturalEvent;

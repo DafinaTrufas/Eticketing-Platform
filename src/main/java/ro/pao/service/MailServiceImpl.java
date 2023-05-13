@@ -1,12 +1,16 @@
 package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.exceptions.ObjectNotFoundException;
+import ro.pao.model.CulturalEvent;
 import ro.pao.model.MailInformation;
 import ro.pao.repository.MailInformationRepository;
 import ro.pao.service.MailService;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -14,13 +18,25 @@ public non-sealed class MailServiceImpl implements MailService {
 
     private final MailInformationRepository mailInformationRepository;
 
+    private static final Logger logger = Logger.getGlobal();
+
     @Override
     public Optional<MailInformation> getById(UUID id) throws SQLException {
 
-        Optional<MailInformation> mailInformation = mailInformationRepository.getObjectById(id);
+        Optional<MailInformation> mailInformation = Optional.empty();
 
-        if(mailInformation.isEmpty()) {
-            throw new RuntimeException("MailInformation not found!");
+        try {
+
+            mailInformation = mailInformationRepository.getObjectById(id);
+
+        } catch (ObjectNotFoundException e) {
+
+            logger.log(Level.WARNING, e.getMessage());
+
+        } catch (Exception e) {
+
+            logger.log(Level.SEVERE, e.getMessage());
+
         }
 
         return mailInformation;

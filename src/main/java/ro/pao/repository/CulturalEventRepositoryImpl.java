@@ -1,8 +1,10 @@
 package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.mapper.CulturalEventMapper;
 import ro.pao.mapper.EventMapper;
+import ro.pao.model.Client;
 import ro.pao.model.CulturalEvent;
 import ro.pao.repository.EventRepository;
 
@@ -19,7 +21,7 @@ public non-sealed class CulturalEventRepositoryImpl implements EventRepository<C
     private static final CulturalEventMapper culturalEventMapper = CulturalEventMapper.getInstance();
 
     @Override
-    public Optional<CulturalEvent> getObjectById (UUID id) throws SQLException {
+    public Optional<CulturalEvent> getObjectById (UUID id) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM cultural_event WHERE id = ?";
@@ -30,15 +32,17 @@ public non-sealed class CulturalEventRepositoryImpl implements EventRepository<C
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            Optional<CulturalEvent> culturalEvent = culturalEventMapper.mapToCulturalEvent(resultSet);
 
-                return culturalEventMapper.mapToCulturalEvent(resultSet);
+            if (culturalEvent.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista niciun eveniment cultural cu acest id!");
 
             }
 
-        }
+            return culturalEventMapper.mapToCulturalEvent(resultSet);
 
-        return Optional.empty();
+        }
 
     }
 

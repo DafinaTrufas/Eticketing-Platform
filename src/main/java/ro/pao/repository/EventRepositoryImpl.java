@@ -1,6 +1,7 @@
 package ro.pao.repository;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.CulturalEvent;
 import ro.pao.model.SportsEvent;
 import ro.pao.model.abstracts.Event;
@@ -19,13 +20,13 @@ public non-sealed class EventRepositoryImpl implements EventRepository<Event> {
     private final EventRepository<SportsEvent> sportsEventRepository;
 
     @Override
-    public Optional<Event> getObjectById(UUID id) throws SQLException {
+    public Optional<Event> getObjectById(UUID id) throws SQLException, ObjectNotFoundException {
 
         try {
 
             culturalEventRepository.getObjectById(id);
 
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ObjectNotFoundException e) {
 
             sportsEventRepository.getObjectById(id);
 

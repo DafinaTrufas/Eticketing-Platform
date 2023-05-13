@@ -1,7 +1,9 @@
 package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.mapper.SportsEventMapper;
+import ro.pao.model.Client;
 import ro.pao.model.SportsEvent;
 import ro.pao.repository.EventRepository;
 
@@ -21,7 +23,7 @@ public non-sealed class SportsEventRepositoryImpl implements EventRepository<Spo
     private static final SportsEventMapper sportsEventMapper = SportsEventMapper.getInstance();
 
     @Override
-    public Optional<SportsEvent> getObjectById (UUID id) throws SQLException {
+    public Optional<SportsEvent> getObjectById (UUID id) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM sports_event WHERE id = ?";
@@ -32,15 +34,17 @@ public non-sealed class SportsEventRepositoryImpl implements EventRepository<Spo
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            Optional<SportsEvent> sportsEvent = sportsEventMapper.mapToSportsEvent(resultSet);
 
-                return sportsEventMapper.mapToSportsEvent(resultSet);
+            if (sportsEvent.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista niciun eveniment sportiv cu acest id!");
 
             }
 
-        }
+            return sportsEventMapper.mapToSportsEvent(resultSet);
 
-        return Optional.empty();
+        }
 
     }
 

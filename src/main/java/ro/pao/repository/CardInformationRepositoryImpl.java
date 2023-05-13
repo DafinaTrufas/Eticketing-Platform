@@ -1,8 +1,10 @@
 package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.mapper.CardInformationMapper;
 import ro.pao.model.CardInformation;
+import ro.pao.model.Client;
 
 import java.sql.*;
 import java.util.List;
@@ -14,7 +16,7 @@ public non-sealed class CardInformationRepositoryImpl implements CardInformation
     private static final CardInformationMapper cardInformationMapper = CardInformationMapper.getInstance();
 
     @Override
-    public Optional<CardInformation> getObjectById (UUID id) throws SQLException {
+    public Optional<CardInformation> getObjectById (UUID id) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM card WHERE id = ?";
@@ -25,15 +27,16 @@ public non-sealed class CardInformationRepositoryImpl implements CardInformation
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            Optional<CardInformation> cardInformation = cardInformationMapper.mapToCardInformation(resultSet);
 
-                return cardInformationMapper.mapToCardInformation(resultSet);
+            if (cardInformation.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista niciun card cu acest id!");
 
             }
 
+            return cardInformationMapper.mapToCardInformation(resultSet);
         }
-
-        return Optional.empty();
 
     }
 
