@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.SportsLocation;
 import ro.pao.repository.LocationRepository;
-import ro.pao.service.LocationService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -104,7 +103,11 @@ public non-sealed class SportsLocationServiceImpl implements LocationService<Spo
 
         Map<UUID, SportsLocation> sportsLocationMap = new HashMap<>();
 
-        for (SportsLocation sportsLocation : sportsLocationList) {
+        Iterator<SportsLocation> sportsLocationIterator = sportsLocationList.iterator();
+
+        while (sportsLocationIterator.hasNext()) {
+
+            SportsLocation sportsLocation = sportsLocationIterator.next();
 
             sportsLocationMap.put(sportsLocation.getId(), sportsLocation);
 

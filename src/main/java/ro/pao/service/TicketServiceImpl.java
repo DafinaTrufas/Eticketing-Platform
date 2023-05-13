@@ -2,11 +2,9 @@ package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.exceptions.ObjectNotFoundException;
-import ro.pao.model.MailInformation;
 import ro.pao.model.Ticket;
 import ro.pao.model.enums.TicketType;
 import ro.pao.repository.TicketRepository;
-import ro.pao.service.TicketService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -116,7 +114,11 @@ public non-sealed class TicketServiceImpl implements TicketService {
 
         Map<UUID, Ticket> ticketMap = new HashMap<>();
 
-        for (Ticket ticket : ticketList) {
+        Iterator<Ticket> ticketIterator = ticketList.iterator();
+
+        while (ticketIterator.hasNext()) {
+
+            Ticket ticket = ticketIterator.next();
 
             ticketMap.put(ticket.getId(), ticket);
 

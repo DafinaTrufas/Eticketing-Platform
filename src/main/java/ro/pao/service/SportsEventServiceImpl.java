@@ -2,10 +2,8 @@ package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.exceptions.ObjectNotFoundException;
-import ro.pao.model.MailInformation;
 import ro.pao.model.SportsEvent;
 import ro.pao.repository.EventRepository;
-import ro.pao.service.EventService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -105,7 +103,11 @@ public non-sealed class SportsEventServiceImpl implements EventService<SportsEve
 
         Map<UUID, SportsEvent> sportsEventMap = new HashMap<>();
 
-        for (SportsEvent sportsEvent : sportsEventList) {
+        Iterator<SportsEvent> sportsEventIterator = sportsEventList.iterator();
+
+        while (sportsEventIterator.hasNext()) {
+
+            SportsEvent sportsEvent = sportsEventIterator.next();
 
             sportsEventMap.put(sportsEvent.getId(), sportsEvent);
 

@@ -2,10 +2,8 @@ package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.exceptions.ObjectNotFoundException;
-import ro.pao.model.CulturalEvent;
 import ro.pao.model.MailInformation;
 import ro.pao.repository.MailInformationRepository;
-import ro.pao.service.MailService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -105,7 +103,11 @@ public non-sealed class MailServiceImpl implements MailService {
 
         Map<UUID, MailInformation> mailInformationMap = new HashMap<>();
 
-        for (MailInformation mailInformation : mailInformationList) {
+        Iterator<MailInformation> mailInformationIterator = mailInformationList.iterator();
+
+        while (mailInformationIterator.hasNext()) {
+
+            MailInformation mailInformation = mailInformationIterator.next();
 
             mailInformationMap.put(mailInformation.getId(), mailInformation);
 

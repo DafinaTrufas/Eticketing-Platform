@@ -3,9 +3,7 @@ package ro.pao.service;
 import lombok.RequiredArgsConstructor;
 import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.CardInformation;
-import ro.pao.model.Client;
 import ro.pao.repository.CardInformationRepository;
-import ro.pao.service.CardService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -105,7 +103,11 @@ public non-sealed class CardServiceImpl implements CardService {
 
         Map<UUID, CardInformation> cardInformationMap = new HashMap<>();
 
-        for (CardInformation cardInformation : cardInformationList) {
+        Iterator<CardInformation> cardInformationIterator = cardInformationList.iterator();
+
+        while (cardInformationIterator.hasNext()) {
+
+            CardInformation cardInformation = cardInformationIterator.next();
 
             cardInformationMap.put(cardInformation.getId(), cardInformation);
 

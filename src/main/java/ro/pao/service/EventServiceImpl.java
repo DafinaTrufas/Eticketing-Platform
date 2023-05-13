@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import ro.pao.model.CulturalEvent;
 import ro.pao.model.SportsEvent;
 import ro.pao.model.abstracts.Event;
-import ro.pao.service.EventService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -156,7 +155,11 @@ public non-sealed class EventServiceImpl implements EventService<Event> {
 
         Map<UUID, Event> eventMap = new HashMap<>();
 
-        for (Event event : eventList) {
+        Iterator<Event> eventIterator = eventList.iterator();
+
+        while (eventIterator.hasNext()) {
+
+            Event event = eventIterator.next();
 
             eventMap.put(event.getId(), event);
 

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import ro.pao.model.CulturalLocation;
 import ro.pao.model.SportsLocation;
 import ro.pao.model.abstracts.Location;
-import ro.pao.service.LocationService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -156,7 +155,11 @@ public non-sealed class LocationServiceImpl implements LocationService<Location>
 
         Map<UUID, Location> locationMap = new HashMap<>();
 
-        for (Location location : locationList) {
+        Iterator<Location> locationIterator = locationList.iterator();
+
+        while (locationIterator.hasNext()) {
+
+            Location location = locationIterator.next();
 
             locationMap.put(location.getId(), location);
 

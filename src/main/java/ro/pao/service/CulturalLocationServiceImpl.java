@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.CulturalLocation;
 import ro.pao.repository.LocationRepository;
-import ro.pao.service.LocationService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -104,7 +103,11 @@ public non-sealed class CulturalLocationServiceImpl implements LocationService<C
 
         Map<UUID, CulturalLocation> culturalLocationMap = new HashMap<>();
 
-        for (CulturalLocation culturalLocation : culturalLocationList) {
+        Iterator<CulturalLocation> culturalLocationIterator = culturalLocationList.iterator();
+
+        while (culturalLocationIterator.hasNext()) {
+
+            CulturalLocation culturalLocation = culturalLocationIterator.next();
 
             culturalLocationMap.put(culturalLocation.getId(), culturalLocation);
 

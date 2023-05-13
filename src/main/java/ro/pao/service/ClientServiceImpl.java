@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.Client;
 import ro.pao.repository.ClientRepository;
-import ro.pao.service.ClientService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -105,7 +104,11 @@ public non-sealed class ClientServiceImpl implements ClientService {
 
         Map<UUID, Client> clientMap = new HashMap<>();
 
-        for (Client client : clientList) {
+        Iterator<Client> clientIterator = clientList.iterator();
+
+        while (clientIterator.hasNext()) {
+
+            Client client = clientIterator.next();
 
             clientMap.put(client.getId(), client);
 

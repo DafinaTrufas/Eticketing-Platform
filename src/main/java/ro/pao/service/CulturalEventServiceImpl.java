@@ -2,10 +2,8 @@ package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
 import ro.pao.exceptions.ObjectNotFoundException;
-import ro.pao.model.Client;
 import ro.pao.model.CulturalEvent;
 import ro.pao.repository.EventRepository;
-import ro.pao.service.EventService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -105,7 +103,11 @@ public non-sealed class CulturalEventServiceImpl implements EventService<Cultura
 
         Map<UUID, CulturalEvent> culturalEventMap = new HashMap<>();
 
-        for (CulturalEvent culturalEvent : culturalEventList) {
+        Iterator<CulturalEvent> culturalEventIterator = culturalEventList.iterator();
+
+        while (culturalEventIterator.hasNext()) {
+
+            CulturalEvent culturalEvent = culturalEventIterator.next();
 
             culturalEventMap.put(culturalEvent.getId(), culturalEvent);
 
