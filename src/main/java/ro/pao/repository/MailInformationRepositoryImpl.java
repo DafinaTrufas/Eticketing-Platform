@@ -1,7 +1,9 @@
 package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.mapper.MailInformationMapper;
+import ro.pao.model.Client;
 import ro.pao.model.MailInformation;
 import ro.pao.repository.MailInformationRepository;
 
@@ -15,7 +17,7 @@ public non-sealed class MailInformationRepositoryImpl implements MailInformation
     private static final MailInformationMapper mailInformationMapper = MailInformationMapper.getInstance();
 
     @Override
-    public Optional<MailInformation> getObjectById (UUID id) throws SQLException {
+    public Optional<MailInformation> getObjectById (UUID id) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM mail WHERE id = ?";
@@ -26,15 +28,17 @@ public non-sealed class MailInformationRepositoryImpl implements MailInformation
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            Optional<MailInformation> mailInformation = mailInformationMapper.mapToMailInformation(resultSet);
 
-                return mailInformationMapper.mapToMailInformation(resultSet);
+            if (mailInformation.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista niciun email cu acest id!");
 
             }
 
-        }
+            return mailInformationMapper.mapToMailInformation(resultSet);
 
-        return Optional.empty();
+        }
 
     }
 

@@ -1,6 +1,7 @@
 package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.mapper.ClientMapper;
 import ro.pao.model.Client;
 import ro.pao.repository.ClientRepository;
@@ -15,10 +16,10 @@ import java.util.UUID;
 
 public non-sealed class ClientRepositoryImpl implements ClientRepository {
 
-    private static final ClientMapper culturalEventMapper = ClientMapper.getInstance();
+    private static final ClientMapper clientMapper = ClientMapper.getInstance();
 
     @Override
-    public Optional<Client> getObjectById (UUID id) throws SQLException {
+    public Optional<Client> getObjectById (UUID id) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM client WHERE id = ?";
@@ -29,15 +30,17 @@ public non-sealed class ClientRepositoryImpl implements ClientRepository {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            Optional<Client> client = clientMapper.mapToClient(resultSet);
 
-                return culturalEventMapper.mapToClient(resultSet);
+            if (client.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista niciun client cu acest id!");
 
             }
 
-        }
+            return clientMapper.mapToClient(resultSet);
 
-        return Optional.empty();
+        }
 
     }
 
@@ -55,7 +58,7 @@ public non-sealed class ClientRepositoryImpl implements ClientRepository {
 
             if (resultSet.next()) {
 
-                return culturalEventMapper.mapToClientList(resultSet).stream().findAny();
+                return clientMapper.mapToClientList(resultSet).stream().findAny();
 
             }
 
@@ -145,7 +148,7 @@ public non-sealed class ClientRepositoryImpl implements ClientRepository {
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectSql)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            return culturalEventMapper.mapToClientList(resultSet);
+            return clientMapper.mapToClientList(resultSet);
 
         } catch (SQLException e) {
             e.printStackTrace();

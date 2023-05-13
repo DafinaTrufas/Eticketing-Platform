@@ -1,5 +1,7 @@
 package ro.pao.repository;
 
+import ro.pao.exceptions.ObjectNotFoundException;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -7,7 +9,7 @@ import java.util.UUID;
 
 public interface Repository <T> {
 
-    Optional<T> getObjectById(UUID id) throws SQLException;
+    Optional<T> getObjectById(UUID id) throws SQLException, ObjectNotFoundException;
 
     void deleteObjectById(UUID id);
 

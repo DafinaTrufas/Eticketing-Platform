@@ -25,7 +25,11 @@ public class Main {
 
             menu.addAndFilterClients();
 
-            menu.addAndGetByTypeTickets();
+            menu.addTickets();
+
+            menu.getByTypeTicket();
+
+            menu.getClientById();
 
             if ("exit".equals(scanner.next())) {
 

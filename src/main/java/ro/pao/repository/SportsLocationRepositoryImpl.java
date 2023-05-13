@@ -1,7 +1,10 @@
 package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.mapper.SportsLocationMapper;
+import ro.pao.model.Client;
+import ro.pao.model.SportsEvent;
 import ro.pao.model.SportsLocation;
 import ro.pao.repository.LocationRepository;
 
@@ -15,7 +18,7 @@ public non-sealed class SportsLocationRepositoryImpl implements LocationReposito
     private static final SportsLocationMapper sportsLocationMapper = SportsLocationMapper.getInstance();
 
     @Override
-    public Optional<SportsLocation> getObjectById (UUID id) throws SQLException {
+    public Optional<SportsLocation> getObjectById (UUID id) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM sports_location WHERE id = ?";
@@ -26,15 +29,17 @@ public non-sealed class SportsLocationRepositoryImpl implements LocationReposito
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            Optional<SportsLocation> sportsLocation = sportsLocationMapper.mapToSportsLocation(resultSet);
 
-                return sportsLocationMapper.mapToSportsLocation(resultSet);
+            if (sportsLocation.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista nicio locatie sportiva cu acest id!");
 
             }
 
-        }
+            return sportsLocationMapper.mapToSportsLocation(resultSet);
 
-        return Optional.empty();
+        }
 
     }
 

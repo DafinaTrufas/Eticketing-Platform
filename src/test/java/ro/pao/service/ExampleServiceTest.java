@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class CulturalEventServiceTest {
 
     private final Menu menu = Menu.getInstance();
-    private final CulturalEventService culturalEventService;
+    private final EventService<CulturalEvent> culturalEventService;
 
     @Test
     void whenGivenCulturalEventClass_thenElementIsAdd() throws SQLException {

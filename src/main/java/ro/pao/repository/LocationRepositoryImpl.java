@@ -1,6 +1,8 @@
 package ro.pao.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.CulturalLocation;
 import ro.pao.model.SportsLocation;
 import ro.pao.model.abstracts.Location;
@@ -19,13 +21,13 @@ public non-sealed class LocationRepositoryImpl implements LocationRepository<Loc
     private final LocationRepository<SportsLocation> sportsLocationRepository;
 
     @Override
-    public Optional<Location> getObjectById(UUID id) throws SQLException {
+    public Optional<Location> getObjectById(UUID id) throws SQLException, ObjectNotFoundException {
 
         try {
 
             culturalLocationRepository.getObjectById(id);
 
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ObjectNotFoundException e) {
 
             sportsLocationRepository.getObjectById(id);
 

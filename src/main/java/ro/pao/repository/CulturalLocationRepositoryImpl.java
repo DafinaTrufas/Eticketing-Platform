@@ -1,7 +1,9 @@
 package ro.pao.repository;
 
 import ro.pao.config.DatabaseConfiguration;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.mapper.CulturalLocationMapper;
+import ro.pao.model.Client;
 import ro.pao.model.CulturalLocation;
 import ro.pao.repository.LocationRepository;
 
@@ -12,10 +14,10 @@ import java.util.UUID;
 
 public non-sealed class CulturalLocationRepositoryImpl implements LocationRepository<CulturalLocation> {
 
-    private static final CulturalLocationMapper culturalEventMapper = CulturalLocationMapper.getInstance();
+    private static final CulturalLocationMapper culturalLocationMapper = CulturalLocationMapper.getInstance();
 
     @Override
-    public Optional<CulturalLocation> getObjectById (UUID id) throws SQLException {
+    public Optional<CulturalLocation> getObjectById (UUID id) throws SQLException, ObjectNotFoundException {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         String qrySQL = "SELECT * FROM cultural_location WHERE id = ?";
@@ -26,15 +28,17 @@ public non-sealed class CulturalLocationRepositoryImpl implements LocationReposi
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            Optional<CulturalLocation> culturalLocation = culturalLocationMapper.mapToCulturalLocation(resultSet);
 
-                return culturalEventMapper.mapToCulturalLocation(resultSet);
+            if (culturalLocation.isEmpty()) {
+
+                throw new ObjectNotFoundException("Nu exista nicio locatie pentru evenimente cultrale, acest id!");
 
             }
 
-        }
+            return culturalLocationMapper.mapToCulturalLocation(resultSet);
 
-        return Optional.empty();
+        }
 
     }
 
@@ -52,7 +56,7 @@ public non-sealed class CulturalLocationRepositoryImpl implements LocationReposi
 
             if (resultSet.next()) {
 
-                return culturalEventMapper.mapToCulturalLocationList(resultSet).stream().findAny();
+                return culturalLocationMapper.mapToCulturalLocationList(resultSet).stream().findAny();
 
             }
 
@@ -144,7 +148,7 @@ public non-sealed class CulturalLocationRepositoryImpl implements LocationReposi
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectSql)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            return culturalEventMapper.mapToCulturalLocationList(resultSet);
+            return culturalLocationMapper.mapToCulturalLocationList(resultSet);
 
         } catch (SQLException e) {
             e.printStackTrace();

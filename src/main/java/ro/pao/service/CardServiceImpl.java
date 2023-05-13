@@ -1,12 +1,16 @@
 package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.CardInformation;
+import ro.pao.model.Client;
 import ro.pao.repository.CardInformationRepository;
 import ro.pao.service.CardService;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -14,16 +18,28 @@ public non-sealed class CardServiceImpl implements CardService {
 
     private final CardInformationRepository cardInformationRepository;
 
+    private static final Logger logger = Logger.getGlobal();
+
     @Override
     public Optional<CardInformation> getById(UUID id) throws SQLException {
 
-        Optional<CardInformation> cardInformation = cardInformationRepository.getObjectById(id);
+        Optional<CardInformation> card = Optional.empty();
 
-        if(cardInformation.isEmpty()) {
-            throw new RuntimeException("Card not found!");
+        try {
+
+            card = cardInformationRepository.getObjectById(id);
+
+        } catch (ObjectNotFoundException e) {
+
+            logger.log(Level.WARNING, e.getMessage());
+
+        } catch (Exception e) {
+
+            logger.log(Level.SEVERE, e.getMessage());
+
         }
 
-        return cardInformation;
+        return card;
 
     }
 

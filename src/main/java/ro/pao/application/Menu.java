@@ -11,6 +11,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,6 +35,8 @@ public class Menu {
     public static Menu getInstance() {
         return (INSTANCE == null ? new Menu() : INSTANCE);
     }
+
+    private static final Logger logger = Logger.getGlobal();
 
     public void addEventOfEachType() throws SQLException {
 
@@ -157,7 +160,7 @@ public class Menu {
 
     }
 
-    public void addAndGetByTypeTickets() throws SQLException {
+    public void addTickets() throws SQLException {
 
         Map<UUID, Ticket> ticketMap = Stream.of(
                                         Ticket.builder()
@@ -178,8 +181,32 @@ public class Menu {
 
         ticketService.addAllFromGivenMap(ticketMap);
 
-        System.out.println("\nDetaliile unui bilet de categorie VIP (daca un astfel de eveniment exista):");
-        System.out.println(ticketService.getByType(TicketType.VIP));
+        System.out.println("\nLista biletelor:");
+        ticketService.getAllFromMap().entrySet().stream().forEach(System.out::println);
+
+    }
+
+    public void getByTypeTicket() throws SQLException {
+
+        Optional<Ticket> ticket = ticketService.getByType(TicketType.VIP);
+
+        if (ticket.isPresent()) {
+
+            System.out.println("\nDetaliile unui bilet de categorie VIP:\n" + ticket + '\n');
+
+        }
+
+    }
+
+    public void getClientById() throws SQLException {
+
+        Optional<Client> client = clientService.getById(UUID.fromString("99e4a3d1-9c0f-4a01-9f51-5e7dce433c34"));
+
+        if (client.isPresent()) {
+
+            System.out.println(client);
+
+        }
 
     }
 
