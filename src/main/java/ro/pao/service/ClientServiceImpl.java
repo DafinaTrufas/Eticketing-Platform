@@ -1,16 +1,24 @@
 package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.application.csv.CSVFormatter;
+import ro.pao.application.csv.CsvWriter;
 import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.Client;
 import ro.pao.repository.ClientRepository;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import static ro.pao.application.utils.Constants.CSV_PATH_WRITE;
 
 @RequiredArgsConstructor
 public non-sealed class ClientServiceImpl implements ClientService {
@@ -18,6 +26,33 @@ public non-sealed class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
     private static final Logger logger = Logger.getGlobal();
+
+    FileHandler fileHandler;
+
+    File file = new File(CSV_PATH_WRITE);
+
+    {
+        try {
+
+            if (!file.exists()) {
+
+                file.getParentFile().mkdirs();
+
+                file.createNewFile();
+
+            }
+
+            fileHandler = new FileHandler(file.getAbsolutePath());
+            fileHandler.setFormatter(new CSVFormatter());
+            logger.addHandler(fileHandler);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
 
     @Override
     public Optional<Client> getById(UUID id) throws SQLException {
@@ -30,7 +65,15 @@ public non-sealed class ClientServiceImpl implements ClientService {
 
         } catch (ObjectNotFoundException e) {
 
-            logger.log(Level.WARNING, e.getMessage());
+            try {
+
+                logger.log(Level.WARNING, e.getMessage());
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+
+            }
 
         } catch (Exception e) {
 

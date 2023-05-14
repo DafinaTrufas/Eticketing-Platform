@@ -1,16 +1,22 @@
 package ro.pao.service;
 
 import lombok.RequiredArgsConstructor;
+import ro.pao.application.csv.CSVFormatter;
 import ro.pao.exceptions.ObjectNotFoundException;
 import ro.pao.model.Ticket;
 import ro.pao.model.enums.TicketType;
 import ro.pao.repository.TicketRepository;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import static ro.pao.application.utils.Constants.CSV_PATH_WRITE;
 
 @RequiredArgsConstructor
 public non-sealed class TicketServiceImpl implements TicketService {
@@ -18,6 +24,33 @@ public non-sealed class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
 
     private static final Logger logger = Logger.getGlobal();
+
+    FileHandler fileHandler;
+
+    File file = new File(CSV_PATH_WRITE);
+
+    {
+        try {
+
+            if (!file.exists()) {
+
+                file.getParentFile().mkdirs();
+
+                file.createNewFile();
+
+            }
+
+            fileHandler = new FileHandler(file.getAbsolutePath());
+            fileHandler.setFormatter(new CSVFormatter());
+            logger.addHandler(fileHandler);
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
 
     @Override
     public Optional<Ticket> getById(UUID id) throws SQLException {

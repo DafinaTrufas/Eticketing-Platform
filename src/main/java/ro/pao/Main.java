@@ -1,6 +1,7 @@
 package ro.pao;
 
 import ro.pao.application.Menu;
+import ro.pao.gateways.Requests;
 
 import java.sql.*;
 import java.util.Scanner;
@@ -30,6 +31,8 @@ public class Main {
             menu.getByTypeTicket();
 
             menu.getClientById();
+
+            new Requests().saveRequestInfo();
 
             if ("exit".equals(scanner.next())) {
 
