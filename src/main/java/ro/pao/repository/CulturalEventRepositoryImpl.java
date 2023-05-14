@@ -118,18 +118,18 @@ public non-sealed class CulturalEventRepositoryImpl implements EventRepository<C
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
-        String qrySQLParent = "INSERT INTO event (id, creationDate) VALUES(?, ?)";
+        String qrySQLParent = "INSERT INTO event (id, creationDate) VALUES (?, ?)";
         String qrySQLChild = "INSERT INTO cultural_event VALUES(?, ?, ?)";
 
-        LocalDateTime startDate = LocalDateTime.now();
-        java.util.Date startUtilDate = java.util.Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant());
-        java.sql.Date startSqlDate = new java.sql.Date(startUtilDate.getTime());
+        LocalDateTime creationDate = LocalDateTime.now();
+        java.util.Date creationUtilDate = java.util.Date.from(creationDate.atZone(ZoneId.systemDefault()).toInstant());
+        java.sql.Date creationSqlDate = new java.sql.Date(creationUtilDate.getTime());
 
         try (PreparedStatement stmtParent = connection.prepareStatement(qrySQLParent);
              PreparedStatement stmtChild = connection.prepareStatement(qrySQLChild)) {
 
             stmtParent.setString(1, culturalEvent.getId().toString());
-            stmtParent.setDate(2, startSqlDate);
+            stmtParent.setDate(2, creationSqlDate);
 
             stmtChild.setString(1, culturalEvent.getId().toString());
             stmtChild.setString(2, culturalEvent.getTitle());

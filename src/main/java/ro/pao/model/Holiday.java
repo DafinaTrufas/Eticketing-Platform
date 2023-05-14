@@ -1,11 +1,18 @@
 package ro.pao.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Holiday {
 
     private String name;
@@ -22,11 +29,11 @@ public class Holiday {
 
     private String type;
 
-    private LocalDate date;
+    private String date;
 
-    private Year date_year;
+    private String date_year;
 
-    private Month date_month;
+    private String date_month;
 
     private String date_day;
 
@@ -34,6 +41,7 @@ public class Holiday {
 
     @Override
     public String toString() {
+
         return "Holiday{" +
                 "name='" + name + '\'' +
                 ", name_local='" + name_local + '\'' +
@@ -42,12 +50,13 @@ public class Holiday {
                 ", country='" + country + '\'' +
                 ", location='" + location + '\'' +
                 ", type='" + type + '\'' +
-                ", date=" + date +
-                ", date_year=" + date_year +
-                ", date_month=" + date_month +
+                ", date='" + date + '\'' +
+                ", date_year='" + date_year + '\'' +
+                ", date_month='" + date_month + '\'' +
                 ", date_day='" + date_day + '\'' +
                 ", week_day='" + week_day + '\'' +
                 '}';
+
     }
 
 }

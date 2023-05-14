@@ -13,8 +13,6 @@ _
 /src/main/java/ro/pao/model/MailInformation.java,3\6\369ed71fff935adaf5850e74d51843e99511ea62
 g
 7src/main/java/ro/pao/model/enums/CulturalEventType.java,b\c\bc8182ff8b022849c193c0b1638208d18b13e623
-V
-&src/main/java/ro/pao/model/Client.java,6\5\65595b29ffebc58cdef463c99ba2687370b8040a
 f
 6src/main/java/ro/pao/mapper/MailInformationMapper.java,a\a\aaa92923fcea3391ed89c192fdb1a943bd0d89dc
 ]
@@ -87,8 +85,6 @@ r
 Bsrc/main/java/ro/pao/repository/CardInformationRepositoryImpl.java,3\6\36cdc2b9f53ede082178f5b017c22270fdbb525a
 h
 8src/main/java/ro/pao/repository/EventRepositoryImpl.java,f\a\fa376e22ff9b0d10539f9d0d344f33e667ad4513
-p
-@src/main/java/ro/pao/repository/CulturalEventRepositoryImpl.java,7\b\7b9463087076fcf4517b4c6b27575850f4ecb10c
 k
 ;src/main/java/ro/pao/repository/LocationRepositoryImpl.java,2\1\216e9d3075014f18fc088a8c078ff126c587b640
 i

@@ -33,7 +33,15 @@ public class Menu {
     private final TicketService ticketService = new TicketServiceImpl(new TicketRepositoryImpl());
 
     public static Menu getInstance() {
-        return (INSTANCE == null ? new Menu() : INSTANCE);
+
+        if (INSTANCE == null) {
+
+            INSTANCE = new Menu();
+
+        }
+
+        return INSTANCE;
+
     }
 
     private static final Logger logger = Logger.getGlobal();
