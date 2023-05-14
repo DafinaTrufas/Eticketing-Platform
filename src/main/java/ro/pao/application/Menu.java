@@ -65,11 +65,26 @@ public class Menu {
         eventService.addOnlyOne(sportsEvent);
 
         System.out.println("Evenimentele culturale:");
-        culturalEventService.getAllFromMap().entrySet().stream().forEach(System.out::println);
+        culturalEventService.getAllFromMap().entrySet().parallelStream().forEach(System.out::println);
         System.out.println("\nEvenimentele sportive:");
         sportsEventService.getAllFromMap().entrySet().stream().forEach(System.out::println);
+        Object mutex = new Object();
         System.out.println("\nToate evenimentele:");
-        eventService.getAllFromMap().entrySet().stream().forEach(System.out::println);
+        eventService.getAllFromMap().entrySet().stream().forEach(entry -> {
+
+            Thread t = new Thread(() -> {
+
+                String event = entry.toString();
+                synchronized(mutex){
+
+                    System.out.println(event);
+
+                };
+
+            });
+            t.start();
+
+        });
 
     }
 
