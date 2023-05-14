@@ -1,8 +1,6 @@
 
 S
 #.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 [
 +src/main/java/ro/pao/model/SportsEvent.java,1\8\186680ae6015cbb8a04d62230fd20c09fdf0ba61
 e
@@ -77,8 +75,6 @@ l
 <src/main/java/ro/pao/exceptions/ObjectNotFoundException.java,0\1\015b1788bf40923151c95e60ab6cf4f3521a8cc2
 d
 4src/test/java/ro/pao/service/ExampleServiceTest.java,f\6\f66168e6b0159e6be80118dc735af45af20970a1
-]
--src/main/java/ro/pao/mapper/ClientMapper.java,0\4\04079682f29d3b58843faeddcd8b578a9ee5120e
 f
 6src/main/java/ro/pao/mapper/CardInformationMapper.java,3\5\35ddbff6fad737ba4808ddb94eeedc7450d7510c
 r
